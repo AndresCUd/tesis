@@ -1,0 +1,20 @@
+{% extends 'nodos/base.html' %}  {% block title %} Lista Archivos{% endblock %} {% block menu %} {% endblock %} {% block content %}
+<div class="header-body">
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered table-striped">
+            <tr>
+                <th>Nombre </th>
+                <th>Ver</th>
+                <th>Descargar</th>
+            </tr>
+            {% for file in data %}
+            <tr>
+                <td>{{file}}</td>
+                <td><a href="{% url "ver"  filename=file %}"  class="btn btn-success">Ver </a></td>
+                <td><a href="{% url "download"  filename=file %}"  class="btn btn-warning">Descargar </a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
