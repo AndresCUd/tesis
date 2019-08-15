@@ -57,12 +57,10 @@ def file_maniputer(request):
  
 
 def download(request,filename):
-
-    file_path = os.path.join(path)
-    path_to_file="C:\\Users\\Andres\\Desktop\\obras\\obras\\obras"
-    response = HttpResponse(content_type='application/force-download') 
-    response['Content-Disposition'] = 'attachment; filename=%s' % filename
-    response['X-Sendfile'] = smart_str(path_to_file) 
+    file = os.path.join(path,filename)
+    response = HttpResponse(open(file).read())#content_type='application/force-download') 
+    response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(filename)
+  #  response['X-Sendfile'] = smart_str(path) 
     # It's usually a good idea to set the 'Content-Length' header too. 
     # You can also set any other required headers: Cache-Control, etc. 
     return response 
@@ -77,12 +75,11 @@ def ver(request,filename):
 
 def detallesNodo(request,filename):
     file = os.path.join(path,filename)
-    file =open(file).read()
-    print(file)
-    return render(request, 'nodos/detalles.html', {"numero": 1})
+    file = open(file,'r')
+    print(file.readlines())
+    return render(request, 'nodos/detalles.html', {"numero": 1,"file":filename})
 
 def index(request):
-
     dirs = os.listdir( path )
     return render(request, 'nodos/index.html',{"data":dirs})
 

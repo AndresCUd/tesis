@@ -99,4 +99,8 @@ div#menu ul li {
 
   </div>
 </div>
+
+<a class="btn btn-primary btn-block" href="{% url 'nodos:download'  filename=file %}" > {{file}} Descargar</a>
+<a class="btn btn-success btn-block" href="{% url 'nodos:index' %}">Regresar</a>
+
 {% endblock %}
