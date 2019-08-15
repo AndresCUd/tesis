@@ -1,0 +1,102 @@
+{% extends 'nodos/base.html' %}
+{% load  static %}
+
+{% block menu %} {{ numero }}{% endblock %}
+{% block content %}
+    <style>
+body {
+  font-family: Verdana,sans-serif;
+  font-size: 1.5em;
+}
+
+div#header, div#footer {
+  padding: 10px;
+  color: white;
+  background-color: black;
+}
+
+div#content {
+  margin: 5px;
+  padding: 10px;
+  background-color: lightgrey;
+}
+
+div.article {
+  margin: 5px;
+  padding: 10px;
+  background-color: white;
+}
+
+div#menu ul {
+  padding: 0;
+}
+
+div#menu ul li {
+  display: inline;
+  margin: 5px;
+}
+
+    </style>
+<div id="content">
+  <h2>Nodo {{ numero }}</h2>
+  <div class="article">
+    <h2>Estado GNSS</h2>
+      <div class="table-responsive">
+        <table class="table table-hover table-bordered table-striped">
+            <tr>
+                <th>Nombre </th>
+                <th>Estado </th>
+            </tr>
+            <tr>
+                <td>Fix Quality</td>
+                <td><a class="d-block small" href="#" ></a></td>
+            </tr>
+            <tr>
+                <td>Satelites</td>
+                <td><a class="d-block small" href="#" ></a></td>
+            </tr>
+            <tr>
+                <td>latitud</td>
+                <td><a class="d-block small" href="#" ></a></td>
+            </tr>
+            <tr>
+                <td>Longitud</td>
+                <td><a class="d-block small" href="#" ></a></td>
+            </tr>
+            <tr>
+                <td>Altitud</td>
+                <td><a class="d-block small" href="#" ></a></td>
+            </tr>
+        </table>
+    </div>
+  </div>
+  <div class="article">
+    <h2>Estado LoRa</h2>
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered table-striped">
+            <tr>
+                <th>Nombre </th>
+                <th>Estado </th>
+            </tr>
+            <tr>
+                <td>Latencia</td>
+                <td><a class="d-block small" href="#" ></a></td>
+            </tr>
+            <tr>
+                <td>Frecuencia </td>
+                <td><a class="d-block small" href="#" ></a></td>
+            </tr>
+            <tr>
+                <td>Power dB</td>
+                <td><a class="d-block small" href="#" ></a></td>
+            </tr>
+            <tr>
+                <td>CRC</td>
+                <td><a class="d-block small" href="#" ></a></td>
+            </tr>
+        </table>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

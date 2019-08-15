@@ -7,5 +7,5 @@ from django.views.generic import RedirectView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('nodos/',include('nodos.urls')),
-    path('', RedirectView.as_view(url='/nodos', permanent=True)),
+    path('', RedirectView.as_view(url='/nodos/login/', permanent=True)),
 ]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
