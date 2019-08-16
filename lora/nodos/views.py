@@ -11,7 +11,7 @@ import json
 
 
 path = "//home//pi//"
-path = "C:\\Users\\varit\\Desktop\\"
+path = "C:\\Users\\varit\\Desktop\\datos\\"
 
 def create_directory():
     command = ["bash", "nodos/scripst/file_manipulater.sh", "create"]
@@ -72,6 +72,13 @@ def ver(request,filename):
     # You can also set any other required headers: Cache-Control, etc. 
     print(file)
     return render(request, 'nodos/ver.html',{"data":file})
+
+
+def actualizar(request):
+    dirs = os.listdir( path )
+    for file in dirs:
+        print(open(file).read())
+    return
 
 def detallesNodo(request,filename):
     file = os.path.join(path,filename)

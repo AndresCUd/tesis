@@ -7,7 +7,7 @@ urlpatterns = [
     path('download/<filename>/', views.download, name='download'),
     path('ver/<filename>/', views.ver, name='ver'),
     path('login/', views.loginUser, name='login'),
-    path('pruebas/', views.file_maniputer, name='pruebas'),
+    path('actualizar/', views.file_maniputer, name='actualizar'),
     path('registro/', views.NewUser, name='registro'),
     path('detallesNodo/<filename>/',views.detallesNodo,name='detalles'),
 ]

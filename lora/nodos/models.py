@@ -8,14 +8,23 @@ class lista(models.Model):
 
 
 class nodos(models.Model):
-    nombre = models.TextField(max_length=200,blank=True)
-    estado = models.BooleanField(default=False)
-    fixQuality =models.IntegerField(default=0)
-    satelites =models.IntegerField(default = 0)
-    latitud = models.TextField(max_length =200,blank=True)
-    longitud = models.TextField(max_length =200,blank=True)
-    altitud = models.IntegerField(default = 0)
-    latencia = models.IntegerField(default = 0)
-    frecuencia =models.IntegerField(default = 0)
-    power =models.IntegerField(default = 0)
-    CRC =models.BooleanField(default=False)
+   #Lora
+   EstadoLora =models.BooleanField(default=False)
+   NumeroNodo = models.IntegerField(default = 0)
+   AnchoBanda = models.IntegerField(default = 0)
+   Canal = models.IntegerField(default = 0)
+   Corriente = models.IntegerField(default = 0)
+   PaquetesEnviados = models.IntegerField(default = 0)
+   PaquetesRecibidos = models.IntegerField(default = 0)
+   TiempoEnvio = models.IntegerField(default = 0)
+   FuerzaSenal = models.IntegerField(default = 0)
+   CargaUtil = models.IntegerField(default = 0)
+   #GNSS
+   estadoGnss = models.BooleanField(default=False)
+   NumeroSatelites = models.IntegerField(default = 0)
+   dilucion = models.IntegerField(default= 0)
+   latitud =  models.IntegerField(default=0)
+   longitud = models.IntegerField(default=0)
+   altitud = models.IntegerField(default=0)
+   fixQuality=models.IntegerField(default=0)
+  
