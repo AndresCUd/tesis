@@ -12,7 +12,6 @@ class nodos(models.Model):
    EstadoLora =models.BooleanField(default=False)
    NumeroNodo = models.IntegerField(default = 0)
    AnchoBanda = models.IntegerField(default = 0)
-   Canal = models.IntegerField(default = 0)
    Corriente = models.IntegerField(default = 0)
    PaquetesEnviados = models.IntegerField(default = 0)
    PaquetesRecibidos = models.IntegerField(default = 0)

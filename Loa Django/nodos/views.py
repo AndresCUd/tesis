@@ -5,7 +5,6 @@ from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login as dj_login
 from django.utils.encoding import  smart_str
 from django.shortcuts import get_object_or_404
-from subprocess import Popen, PIPE, STDOUT
 from django.views.decorators.csrf import csrf_exempt
 from .models import nodos
 import os, sys
@@ -48,7 +47,6 @@ def actualizar(request):
             n = nodos.objects.get(NumeroNodo= lastData[0]) 
             n.EstadoLora = True if words[0] == 0 else False
             n.AnchoBanda = 500
-            n.Canal = 10
             n.Corriente = 100
             n.PaquetesEnviados = 10
             n.PaquetesRecibidos = 10
@@ -67,10 +65,9 @@ def actualizar(request):
             print(n)
         except nodos.DoesNotExist:
             n = nodos(
-                    EstadoLora = True if words[0] == 0 else False,
                     NumeroNodo = lastData[0],
+                    EstadoLora = True if words[0] == 0 else False,
                     AnchoBanda = 0,
-                    Canal =0,
                     Corriente =0,
                     PaquetesEnviados = 0,
                     PaquetesRecibidos =0,
