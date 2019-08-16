@@ -4,56 +4,16 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login as dj_login
 from django.utils.encoding import  smart_str
+from django.shortcuts import get_object_or_404
 from subprocess import Popen, PIPE, STDOUT
 from django.views.decorators.csrf import csrf_exempt
+from .models import nodos
 import os, sys
 import json
 
 
 path = "//home//pi//"
 path = "C:\\Users\\varit\\Desktop\\datos\\"
-
-def create_directory():
-    command = ["bash", "nodos/scripst/file_manipulater.sh", "create"]
-    try:
-        process = Popen(command, stdout=PIPE, stderr=STDOUT)
-        output = process.stdout.read()
-        exitstatus = process.poll()
-        if (exitstatus == 0):
-            return {"status": "Success", "output": str(output)}
-        else:
-            return {"status": "Failed", "output": str(output)}
-    except Exception as e:
-        return {"status": "failed", "output": str(e)}
-
-
-def delete_directory():
-    command = ["bash", "easyaslinux/scripts/file_manipulater.sh", "delete"]
-    try:
-        process = Popen(command, stdout=PIPE, stderr=STDOUT)
-        output = process.stdout.read()
-        exitstatus = process.poll()
-        if (exitstatus == 0):
-            return {"status": "Success", "output": str(output)}
-        else:
-            return {"status": "Failed", "output": str(output)}
-    except Exception as e:
-        return {"status": "failed", "output": str(e)}
-
-
-
-@csrf_exempt
-def file_maniputer(request):
-    action = "create"
-    if action == "create":
-        data = create_directory()
-    elif action == "delete":
-        data = delete_directory()
-    else:
-        data = {"status": "not defined", "output": "not defined"}
-    print("Hola")
-    response = HttpResponse(json.dumps(data), content_type='application/json', status=200)
-    return response 
  
 
 def download(request,filename):
@@ -76,9 +36,58 @@ def ver(request,filename):
 
 def actualizar(request):
     dirs = os.listdir( path )
+    print(dirs)
     for file in dirs:
-        print(open(file).read())
-    return
+        print(file)
+        file0 = os.path.join(path,file)
+        data = open(file0).readlines()
+        lastData = data[len(data)-1]
+        words = lastData.split(",") 
+        print(words)
+        try:
+            n = nodos.objects.get(NumeroNodo= lastData[0]) 
+            n.EstadoLora = True if words[0] == 0 else False
+            n.AnchoBanda = 500
+            n.Canal = 10
+            n.Corriente = 100
+            n.PaquetesEnviados = 10
+            n.PaquetesRecibidos = 10
+            n.TiempoEnvio = 10
+            n.FuerzaSenal = 10
+            n.CargaUtil = 10
+             #GNSS
+            n.estadoGnss = False
+            n.NumeroSatelites = 1
+            n.dilucion =1
+            n.latitud = 1
+            n.longitud = 1
+            n.altitud = 1
+            n.fixQuality= 0
+            n.save()
+            print(n)
+        except nodos.DoesNotExist:
+            n = nodos(
+                    EstadoLora = True if words[0] == 0 else False,
+                    NumeroNodo = lastData[0],
+                    AnchoBanda = 0,
+                    Canal =0,
+                    Corriente =0,
+                    PaquetesEnviados = 0,
+                    PaquetesRecibidos =0,
+                    TiempoEnvio = 0,
+                    FuerzaSenal = 0,
+                    CargaUtil = 0,
+                    #GNSS
+                    estadoGnss = lastData[0],
+                    NumeroSatelites = 0,
+                    dilucion = 0,
+                    latitud = 0,
+                    longitud = 0,
+                    altitud = 0,
+                    fixQuality= 0
+            )
+            n.save()
+    return  render(request, 'nodos/index.html',{"data":dirs})
 
 def detallesNodo(request,filename):
     file = os.path.join(path,filename)
