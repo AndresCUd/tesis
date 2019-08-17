@@ -7,8 +7,9 @@ int e, paqueteEnviado = 0, paqueterecibido = 0, paqOrigin = 0;
 int snr, rssi, rssil, proxNodo;
 char my_packet[300];
 char mess[] = "echo '";
-char mess1[] = "' >> /home/pi/Desktop/nodo";
-char mess2[] = ".txt";
+char messLora[] = "' >> /home/pi/Desktop/LoRa/nodo";
+char messGnss[] = "' >> /home/pi/Desktop/DatosGnss/nodo";
+char mesEnd[] = ".txt";
 bool mode = true;
 double secs = 0;
 time_t rawtime;
@@ -149,7 +150,7 @@ void maestro(void)
               my_packet[j] = (char)sx1272.packet_received.data[j];
             }
             //e = sx1272.getNodeAddress();
-            sprintf(info1, "%s%s%s%d%s", mess, my_packet, mess1, i, mess2);
+            sprintf(info1, "%s%s%s%d%s", mess, my_packet, messLora, i, mesEnd);
             printf("Message :%s\n", my_packet);
             system(info1);
           }
@@ -157,7 +158,7 @@ void maestro(void)
       }
       else
       {
-        sprintf(info1, "%s%d%s%d%s", mess, i, mess1, i, mess2);
+        sprintf(info1, "%s%d%s%d%s", mess, i, messLora, i, mesEnd);
         system(info1);
       }
       delay(500);
