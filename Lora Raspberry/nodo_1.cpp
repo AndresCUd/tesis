@@ -8,10 +8,10 @@ int e, paqueteEnviado = 0, paqueterecibido = 0, paqOrigin = 0;
 int snr, rssi, rssil, proxNodo;
 char my_packet[300];
 char mess[] = "echo '";
-char messLora[] = "' >> /home/pi/Desktop/LoRa/nodo";
-char messGnss[] = "' >> /home/pi/Desktop/DatosGnss/nodo";
+char messLora[] = "\r\n' >> /home/pi/Desktop/LoRa/nodo";
+char messGnss[] = "\r\n' >> /home/pi/Desktop/DatosGnss/nodo";
 char mesEnd[] = ".txt";
-bool mode = false;
+bool mode = true;
 double secs = 0;
 time_t rawtime;
 char info1[300];
@@ -29,7 +29,7 @@ void setup()
     Serial.begin(9600);
     // Power ON the module
     e = sx1272.ON();
-    printf("Setting power ON: state %d\n", e);
+    printf("Setting power ON: state %d \n", e);
 
     // Set transmission mode
     e |= sx1272.setMode(4);
@@ -46,7 +46,7 @@ void setup()
     printf("Setting CRC ON: state %d\n", e);
 
     // Select output power (Max, High or Low)
-    e |= sx1272.setPower('H');
+    e |= sx1272.setPower('M');
     printf("Setting Power: state %d\n", e);
 
     // Set the node address
@@ -64,32 +64,28 @@ void setup()
 
 void esclavo(void)
 {
-    e = sx1272.receivePacketTimeoutACK(9000);
+    e = sx1272.getNodeAddress();
+    e = sx1272.getRSSI();
+    e = sx1272.getBW();
+    e = sx1272.getMaxCurrent();
+    e = sx1272.getPayloadLength();
+    e = sx1272.receivePacketTimeoutACK(10000);
     if (e == 0)
     {
         for (unsigned int i = 0; i < sx1272.packet_received.length; i++)
         {
             my_packet[i] = (char)sx1272.packet_received.data[i];
         }
-        printf(my_packet);
         if (my_packet[0] == 97)
         {
             paqOrigin = (int)sx1272.packet_received.src;
-            printf("Enviado al Nodo %d \n", paqOrigin);
+            printf("Retorna Al Nodo %d \n", paqOrigin);
             paqueterecibido = paqueterecibido + 1;
             struct timeval start, stop;
-            // Formato Informacion
-            e = sx1272.getNodeAddress();
-            e = sx1272.getRSSI();
-            e = sx1272.getBW();
-            e = sx1272.getMaxCurrent();
-            e = sx1272.getPayloadLength();
             // Esto de LoRa
-            sprintf(info1, "%d%s%d%s%d%s%f%s%d%s%d%s%d%s%d%s%d", sx1272._nodeAddress, coma, sx1272._bandwidth, coma, sx1272._maxCurrent, coma, paqueteEnviado, coma, paqueterecibido, coma, secs, coma, sx1272._RSSI, coma, sx1272._payloadlength);
-            // Estado GNSS + Datos
-            //sprintf(info1,"%d%s%d%s%d%s%f%s%d%s%d%s%d%s%d%s%d",sx1272._nodeAddress,coma,paqueteEnviado,coma,paqueterecibido,coma,secs,coma,sx1272._RSSI,coma,sx1272$
-            //Total Info
-            //sprintf(info1,"%s%s",info,info2);
+            printf("Error 1\n");
+            sprintf(info1, "%d%s%d%s%d%s%d%s%d%s%f%s%d%s%d%s%d", sx1272._nodeAddress, coma, sx1272._bandwidth, coma, sx1272._maxCurrent, coma, paqueteEnviado, coma, paqueterecibido, coma, secs, coma, sx1272._RSSI, coma, sx1272._payloadlength);
+            printf("Error 2 %s \n", info1);
             e = 2;
             int error = 0;
             while (e > 1)
@@ -99,8 +95,7 @@ void esclavo(void)
                 gettimeofday(&stop, NULL);
                 secs = (double)(stop.tv_usec - start.tv_usec) / 1000000 + (double)(stop.tv_sec - start.tv_sec);
                 paqueteEnviado = paqueteEnviado + 1;
-                printf("Info regresada %s:\n ", info1);
-                delay(500);
+                printf("Info regresada %s :\n ", info1);
                 error = error + 1;
                 if (error == 4)
                 {
@@ -117,7 +112,7 @@ void esclavo(void)
     {
         printf("No hay hay paquete\n");
     }
-    delay(500);
+    delay(1000);
 }
 
 void maestro(void)
@@ -129,7 +124,7 @@ void maestro(void)
         if (i != k)
         {
             e = sx1272.sendPacketTimeoutACK(i, mgsA);
-            printf("Prgeunta al nodo %d\n", i);
+            printf("%d  Pregunta al nodo %d\n", sx1272._nodeAddress, i);
             if (e == 0)
             {
                 e = 3;
@@ -143,25 +138,12 @@ void maestro(void)
                         {
                             my_packet[j] = (char)sx1272.packet_received.data[j];
                         }
-                        e = sx1272.getNodeAddress();
                         sprintf(info1, "%s%s%s%d%s", mess, my_packet, messLora, i, mesEnd);
-                        printf("Message :%s\n", my_packet);
+                        printf("Message %s \n", my_packet);
                         system(info1);
                     }
                 }
             }
-            delay(500);
-        }
-        else
-        {
-            e = sx1272.getNodeAddress();
-            e = sx1272.getRSSI();
-            e = sx1272.getBW();
-            e = sx1272.getMaxCurrent();
-            e = sx1272.getPayloadLength();
-            // Esto de LoRa
-            sprintf(info1, "%d%s%d%s%d%s%f%s%d%s%d%s%d%s%d%s%d", sx1272._nodeAddress, coma, sx1272._bandwidth, coma, sx1272._maxCurrent, coma, paqueteEnviado, coma, paqueterecibido, coma, secs, coma, sx1272._RSSI, coma, sx1272._payloadlength);
-            system(info1);
         }
     }
     while (mode)
@@ -170,7 +152,7 @@ void maestro(void)
         {
             if (j != k)
             {
-                printf("Message :%d\n", j);
+                printf("Nuevo Maestro %d \n", j);
                 e = sx1272.sendPacketTimeoutACK(j, mgsB);
                 if (e == 0)
                 {
@@ -199,3 +181,4 @@ int main()
     }
     return (0);
 }
+

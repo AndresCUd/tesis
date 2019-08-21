@@ -29,7 +29,7 @@ def ver(request,filename):
     file =open(file).read()
     # It's usually a good idea to set the 'Content-Length' header too. 
     # You can also set any other required headers: Cache-Control, etc. 
-    print(file)
+    print(nodo)
     return render(request, 'nodos/ver.html',{"data":file})
 
 
@@ -41,18 +41,17 @@ def actualizar(request):
         file0 = os.path.join(path,file)
         data = open(file0).readlines()
         lastData = data[len(data)-1]
-        words = lastData.split(",") 
-        print(words)
+        data = lastData.split(",") 
         try:
-            n = nodos.objects.get(NumeroNodo= lastData[0]) 
-            n.EstadoLora = True if words[0] == 0 else False
-            n.AnchoBanda = 500
-            n.Corriente = 100
-            n.PaquetesEnviados = 10
-            n.PaquetesRecibidos = 10
-            n.TiempoEnvio = 10
-            n.FuerzaSenal = 10
-            n.CargaUtil = 10
+            n = nodos.objects.get(NumeroNodo= data[0]) 
+            n.EstadoLora = True if int(data[0]) != 0 else False
+            n.AnchoBanda = int(data[1])
+            n.Corriente = int(data[2])
+            n.PaquetesEnviados = int(data[3])
+            n.PaquetesRecibidos = int(data[4])
+            n.TiempoEnvio = int(data[5])
+            n.FuerzaSenal = int(data[6])
+            n.CargaUtil = int(data[7])
              #GNSS
             n.estadoGnss = False
             n.NumeroSatelites = 1
@@ -62,18 +61,17 @@ def actualizar(request):
             n.altitud = 1
             n.fixQuality= 0
             n.save()
-            print(n)
         except nodos.DoesNotExist:
             n = nodos(
-                    NumeroNodo = lastData[0],
-                    EstadoLora = True if words[0] == 0 else False,
-                    AnchoBanda = 0,
-                    Corriente =0,
-                    PaquetesEnviados = 0,
-                    PaquetesRecibidos =0,
-                    TiempoEnvio = 0,
-                    FuerzaSenal = 0,
-                    CargaUtil = 0,
+                    NumeroNodo = data[1],
+                    EstadoLora = True if int(data[0]) != 0 else False,
+                    AnchoBanda = int(data[1]),
+                    Corriente =int(data[2]),
+                    PaquetesEnviados = int(data[3]),
+                    PaquetesRecibidos =int(data[4]),
+                    TiempoEnvio = int(data[5]),
+                    FuerzaSenal = int(data[6]),
+                    CargaUtil = int(data[7]),
                     #GNSS
                     estadoGnss = lastData[0],
                     NumeroSatelites = 0,
@@ -88,9 +86,12 @@ def actualizar(request):
 
 def detallesNodo(request,filename):
     file = os.path.join(path,filename)
-    file = open(file,'r')
-    print(file.readlines())
-    return render(request, 'nodos/detalles.html', {"numero": 1,"file":filename})
+    data = open(file,'r').readlines()
+    lastData = data[len(data)-1]
+    data = lastData.split(",") 
+    nodo = get_object_or_404(nodos,NumeroNodo = data[0])
+    print(nodo.EstadoLora)
+    return render(request, 'nodos/detalles.html', {"numero":nodo.NumeroNodo,"data":nodo,"file":filename})
 
 def index(request):
     dirs = os.listdir( path )

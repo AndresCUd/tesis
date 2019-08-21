@@ -16,13 +16,13 @@ div#header, div#footer {
 }
 
 div#content {
-  margin: 5px;
-  padding: 8px;
+  margin: 2px;
+  padding: 2px;
   background-color: lightgrey;
 }
 
 div.article {
-  margin: 5px;
+  margin: 10px;
   padding: 10px;
   background-color: white;
 }
@@ -36,50 +36,14 @@ div#menu ul li {
   margin: 5px;
 }
 
+h2{
+    text-align: center;
+}
     </style>
 <div id="content">
   <h2>Nodo {{ numero }}</h2>
   <div class="article">
-    <h2>Nodo GNSS</h2>
-      <div class="table-responsive">
-        <table class="table table-hover table-bordered table-striped">
-            <tr>
-                <th>Nombre </th>
-                <th>Estado </th>
-            </tr>
-            <tr>
-                <td>Estado</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Numero Satelites</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Dilucion Horizontal  <br> de la Posicion</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>latitud</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Longitud</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Altitud</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Fix Quality</td>
-                <td></td>
-            </tr>
-        </table>
-    </div>
-  </div>
-  <div class="article">
-    <h2>Estado LoRa</h2>
+    <h2>LoRa</h2>
     <div class="table-responsive">
         <table class="table table-hover table-bordered table-striped">
             <tr>
@@ -88,49 +52,91 @@ div#menu ul li {
             </tr>
             <tr>
                 <td>Estado</td>
-                <td></td>
+                {% if data.EstadoLora %}
+                <td><i class="fas fa-check"> </i></td>
+                {% else %}
+                <td><i class="fas fa-times"></i></td>
+                {% endif %}
             </tr>
+
             <tr>
                 <td>Numero de Nodo </td>
-                <td></td>
+                <td> {{ data.NumeroNodo }} </td>
             </tr>
             <tr>
                 <td>Ancho de Banda</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Canal</td>
-                <td></td>
+                <td>{{ data.AnchoBanda }}</td>
             </tr>
             <tr>
                 <td>Correinte</td>
-                <td></td>
+                <td>{{ data.Corriente }}</td>
             </tr>
             <tr>
                 <td>Paquetes Enviados</td>
-                <td></td>
+                <td>{{ data.PaquetesEnviados }}</td>
             </tr>
             <tr>
                 <td>Paquetes Recividos</td>
-                <td></td>
+                <td>{{ data.PaquetesRecibidos  }}</td>
             </tr>
             <tr>
                 <td>Tiempo Envio</td>
-                <td></td>
+                <td>{{ data.TiempoEnvio }}</td>
             </tr>
             <tr>
                 <td>RSSI(Fuerza Señal)</td>
-                <td></td>
+                <td>{{ data.FuerzaSenal  }}</td>
             </tr>
             <tr>
                 <td>Payload (Carga Util</td>
-                <td></td>
+                <td>{{  data.CargaUtil }}</td>
             </tr>
 
         </table>
     </div>
 
   </div>
+
+  <div class="article">
+    <h2>GNSS</h2>
+      <div class="table-responsive">
+        <table class="table table-hover table-bordered table-striped">
+            <tr>
+                <th>Nombre </th>
+                <th>Estado </th>
+            </tr>
+            <tr>
+                <td>Estado</td>
+                <td>{{ numero }}</td>
+            </tr>
+            <tr>
+                <td>Numero Satelites</td>
+                <td>{{ numero }}</td>
+            </tr>
+            <tr>
+                <td>Dilucion Horizontal  <br> de la Posicion</td>
+                <td>{{ numero }}</td>
+            </tr>
+            <tr>
+                <td>latitud</td>
+                <td>{{ numero }}</td>
+            </tr>
+            <tr>
+                <td>Longitud</td>
+                <td>{{ numero }}</td>
+            </tr>
+            <tr>
+                <td>Altitud</td>
+                <td>{{ numero }}</td>
+            </tr>
+            <tr>
+                <td>Fix Quality</td>
+                <td>{{ numero }}</td>
+            </tr>
+        </table>
+    </div>
+  </div>
+
 </div>
 
 <a class="btn btn-primary btn-block" href="{% url 'nodos:download'  filename=file %}" >Descargar</a>

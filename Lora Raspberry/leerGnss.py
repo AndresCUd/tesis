@@ -1,28 +1,13 @@
-import serail
+import serial
+import time
 
-port = serail.Serial("/dev/ttyAMA0",baudrate=9600,timeout = 3.0)
-rcv = port.read(30)
-print(rcv)
-
-    #include <SoftwareSerial.h>
-
-SoftwareSerial gps(4,3);
-
-char dato=' ';
-
-void setup()
-{
- Serial.begin(115200);            
- gps.begin(9600); 
-}
-
-
-void loop()
-{
-  if(Serial.available())
-  {
-    dato=Serial.read();
-    gps.print(dato);
-  }
-}
-port = serial.Serial("/dev/serial0",baudrate=9600)
+port = serial.Serial(port = "/dev/ttyS0",
+                    baudrate=9600,
+                    timeout = 3.0,
+                    bytesize=serial.EIGHTBITS )
+port.open()
+while 1: 
+    if(ser.in_waiting >0):
+        line = ser.readline()
+        print(line)
+        print("Hola")
