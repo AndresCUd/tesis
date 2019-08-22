@@ -8,6 +8,8 @@ urlpatterns = [
     path('ver/<filename>/', views.ver, name='ver'),
     path('login/', views.loginUser, name='login'),
     path('actualizar/', views.actualizar, name='actualizar'),
+    path('maestro/', views.maestro, name='maestro'),
+    path('esclavo/', views.esclavo, name='esclavo'),
     path('registro/', views.NewUser, name='registro'),
     path('detallesNodo/<filename>/',views.detallesNodo,name='detalles'),
 ]

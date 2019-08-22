@@ -17,7 +17,7 @@ class nodos(models.Model):
    PaquetesRecibidos = models.IntegerField(default = 0)
    TiempoEnvio = models.IntegerField(default = 0)
    FuerzaSenal = models.IntegerField(default = 0)
-   CargaUtil = models.IntegerField(default = 0)
+   CargaUtil = models.TextField(default = 0)
    #GNSS
    estadoGnss = models.BooleanField(default=False)
    NumeroSatelites = models.IntegerField(default = 0)

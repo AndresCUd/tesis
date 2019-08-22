@@ -4,12 +4,12 @@
 #include "arduPiLoRa.h"
 //#include <SPI.h>
 
-int e, paqueteEnviado = 0, paqueterecibido = 0, paqOrigin = 0;
+int e, paqueteEnviado = 0, paqueteRecibido = 0, paqOrigin = 0;
 int snr, rssi, rssil, proxNodo;
 char my_packet[300];
 char mess[] = "echo '";
-char messLora[] = "\r\n' >> /home/pi/Desktop/LoRa/nodo";
-char messGnss[] = "\r\n' >> /home/pi/Desktop/DatosGnss/nodo";
+char messLora[] = "' >> /home/pi/Desktop/LoRa/nodo";
+char messGnss[] = "' >> /home/pi/Desktop/DatosGnss/nodo";
 char mesEnd[] = ".txt";
 bool mode = true;
 double secs = 0;
@@ -80,11 +80,11 @@ void esclavo(void)
         {
             paqOrigin = (int)sx1272.packet_received.src;
             printf("Retorna Al Nodo %d \n", paqOrigin);
-            paqueterecibido = paqueterecibido + 1;
+            paqueteRecibido = paqueteRecibido + 1;
             struct timeval start, stop;
             // Esto de LoRa
             printf("Error 1\n");
-            sprintf(info1, "%d%s%d%s%d%s%d%s%d%s%f%s%d%s%d%s%d", sx1272._nodeAddress, coma, sx1272._bandwidth, coma, sx1272._maxCurrent, coma, paqueteEnviado, coma, paqueterecibido, coma, secs, coma, sx1272._RSSI, coma, sx1272._payloadlength);
+            sprintf(info1, "%d%s%d%s%d%s%d%s%d%s%f%s%d%s%d%s%d", sx1272._nodeAddress, coma, sx1272._bandwidth, coma, sx1272._maxCurrent, coma, paqueteEnviado, coma, paqueteRecibido, coma, secs, coma, sx1272._RSSI, coma, sx1272._payloadlength, coma);
             printf("Error 2 %s \n", info1);
             e = 2;
             int error = 0;
@@ -146,30 +146,34 @@ void maestro(void)
             }
         }
     }
-    while (mode)
-    {
-        for (int j = k + 1; j < 10; j++)
-        {
-            if (j != k)
-            {
-                printf("Nuevo Maestro %d \n", j);
-                e = sx1272.sendPacketTimeoutACK(j, mgsB);
-                if (e == 0)
-                {
-                    mode = false;
-                    break;
-                }
-            }
-        }
-        k = 0;
-    }
+  //while (mode)
+  //{
+   // for (int j = k + 1; j < 10; j++)
+    //{
+     // if (j != k)
+      //{
+       // printf("Message :%d\n", j);
+        //e = sx1272.sendPacketTimeoutACK(j, mgsB);
+        //if (e == 0)
+        //{
+         // mode = false;
+          //break;
+       // }
+     // }
+   // }
+    //k = 0;
+  //}
 }
+   
 
 int main()
 {
     setup();
+    paqueteEnviado = system("python //home//pi//Desktop//LoRa//datos1.py");
+    paqueteRecibido = system("python //home//pi//Desktop//LoRa//datos2.py");
     while (1)
     {
+         mode = system("python //home//pi//Desktop//LoRa//modo.py")
         if (mode)
         {
             maestro();
@@ -181,4 +185,3 @@ int main()
     }
     return (0);
 }
-

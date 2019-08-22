@@ -107,7 +107,11 @@ h2{
             </tr>
             <tr>
                 <td>Estado</td>
-                <td>{{ numero }}</td>
+                {% if data.EstadoLora %}
+                <td><i class="fas fa-check"> </i></td>
+                {% else %}
+                <td><i class="fas fa-times"></i></td>
+                {% endif %}
             </tr>
             <tr>
                 <td>Numero Satelites</td>

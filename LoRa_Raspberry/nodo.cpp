@@ -3,7 +3,7 @@
 #include "arduPiLoRa.h"
 //#include <SPI.h>
 
-int e, paqueteEnviado = 0, paqueterecibido = 0, paqOrigin = 0;
+int e, paqueteEnviado = 0, paqueteRecibido = 0, paqOrigin = 0;
 int snr, rssi, rssil, proxNodo;
 char my_packet[300];
 char mess[] = "echo '";
@@ -66,7 +66,7 @@ void setup()
 void lectura()
 {
   Serial.write()
-  printf("LEctura GPS ");
+      printf("LEctura GPS ");
 }
 
 void esclavo(void)
@@ -83,7 +83,7 @@ void esclavo(void)
     {
       paqOrigin = (int)sx1272.packet_received.src;
       printf("Enviado al Nodo %d \n", paqOrigin);
-      paqueterecibido = paqueterecibido + 1;
+      paqueteRecibido = paqueteRecibido + 1;
       struct timeval start, stop;
       // Formato Informacion
       // Nombre,#PaquetesEnviado,#PaquetesRecivudo,TimepoEnvio,RSSI,BW,Canal,Corriente,Payload
@@ -93,9 +93,9 @@ void esclavo(void)
       e = sx1272.getMaxCurrent();
       e = sx1272.getPayloadLength();
       // Esto de LoRa
-      sprintf(info1, "%d%s%d%s%d%s%f%s%d%s%d%s%d%s%d%s%d", sx1272._nodeAddress, coma, sx1272._bandwidth, coma, sx1272._maxCurrent, coma, paqueteEnviado, coma, paqueterecibido, coma, secs, coma, sx1272._RSSI, coma, sx1272._payloadlength);
+      sprintf(info1, "%d%s%d%s%d%s%f%s%d%s%d%s%d%s%d%s%d", sx1272._nodeAddress, coma, sx1272._bandwidth, coma, sx1272._maxCurrent, coma, paqueteEnviado, coma, paqueteRecibido, coma, secs, coma, sx1272._RSSI, coma, sx1272._payloadlength);
       // Estado GNSS + Datos
-      //sprintf(info1,"%d%s%d%s%d%s%f%s%d%s%d%s%d%s%d%s%d",sx1272._nodeAddress,coma,paqueteEnviado,coma,paqueterecibido,coma,secs,coma,sx1272._RSSI,coma,sx1272._bandwidth,coma,sx1272._channel,coma,sx1272._maxCurrent,coma,sx1272._payloadlength);
+      //sprintf(info1,"%d%s%d%s%d%s%f%s%d%s%d%s%d%s%d%s%d",sx1272._nodeAddress,coma,paqueteEnviado,coma,paqueteRecibido,coma,secs,coma,sx1272._RSSI,coma,sx1272._bandwidth,coma,sx1272._channel,coma,sx1272._maxCurrent,coma,sx1272._payloadlength);
       //Total Info
       //sprintf(info1,"%s%s",info,info2);
       e = 2;
@@ -133,7 +133,8 @@ void maestro(void)
   int k = sx1272._nodeAddress;
   for (int i = 1; i < 10; i++)
   {
-    if (i != k){
+    if (i != k)
+    {
       e = sx1272.sendPacketTimeoutACK(i, mgsA);
       printf("Pregunta al nodo %d\n", i);
       if (e == 0)
@@ -162,7 +163,9 @@ void maestro(void)
         system(info1);
       }
       delay(500);
-    }else{
+    }
+    else
+    {
       e = sx1272.getNodeAddress();
       e = sx1272.getRSSI();
       e = sx1272.getBW();
@@ -170,34 +173,37 @@ void maestro(void)
       e = sx1272.getPayloadLength();
       // Esto de LoRa
       lectura();
-      sprintf(info1, "%d%s%d%s%d%s%f%s%d%s%d%s%d%s%d%s%d", sx1272._nodeAddress, coma, sx1272._bandwidth, coma, sx1272._maxCurrent, coma, paqueteEnviado, coma, paqueterecibido, coma, secs, coma, sx1272._RSSI, coma, sx1272._payloadlength);
-      system(info1);  
+      sprintf(info1, "%d%s%d%s%d%s%f%s%d%s%d%s%d%s%d%s%d", sx1272._nodeAddress, coma, sx1272._bandwidth, coma, sx1272._maxCurrent, coma, paqueteEnviado, coma, paqueteRecibido, coma, secs, coma, sx1272._RSSI, coma, sx1272._payloadlength);
+      system(info1);
     }
   }
-  while (mode)
-  {
-    for (int j = k + 1; j < 10; j++)
-    {
-      if (j != k)
-      {
-        printf("Message :%d\n", j);
-        e = sx1272.sendPacketTimeoutACK(j, mgsB);
-        if (e == 0)
-        {
-          mode = false;
-          break;
-        }
-      }
-    }
-    k = 0;
-  }
+  //while (mode)
+  //{
+   // for (int j = k + 1; j < 10; j++)
+    //{
+     // if (j != k)
+      //{
+       // printf("Message :%d\n", j);
+        //e = sx1272.sendPacketTimeoutACK(j, mgsB);
+        //if (e == 0)
+        //{
+         // mode = false;
+          //break;
+       // }
+     // }
+   // }
+    //k = 0;
+  //}
 }
-void datos(){
-    data = system("python leerGNSS.py");
+void datos()
+{
+  paqueteEnviado = system("python //home//pi//Desktop//LoRa//datos1.py");
+  paqueteRecibido = system("python //home//pi//Desktop//LoRa//datos2.py");
 }
 int main()
 {
   setup();
+  datos();
   while (1)
   {
 
