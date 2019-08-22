@@ -12,7 +12,7 @@ import json
 
 
 path = "//home//pi//"
-path = "C:\\Users\\varit\\Desktop\\datos\\"
+#path = "C:\\Users\\varit\\Desktop\\datos\\"
  
 
 def download(request,filename):
@@ -109,7 +109,6 @@ def detallesNodo(request,filename):
     return render(request, 'nodos/detalles.html', {"numero":nodo.NumeroNodo,"data":nodo,"file":name})
 
 def index(request):
-    dirs = os.listdir( path )
     n =  nodos.objects.all()
     return render(request, 'nodos/index.html',{"data":n})
 

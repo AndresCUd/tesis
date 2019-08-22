@@ -8,3 +8,4 @@ data = open(file,'r').readlines()
 lastData = data[len(data) - 1]
 data =  lastData.split(",") 
 print(int(data[3]))
+
