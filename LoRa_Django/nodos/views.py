@@ -10,8 +10,7 @@ from .models import nodos
 import os, sys
 import json
 
-
-path = "//home//pi//"
+path = "//home//pi//Desktop//LoRa//"
 #path = "C:\\Users\\varit\\Desktop\\datos\\"
  
 
@@ -53,6 +52,7 @@ def esclavo(request):
     return  render(request, 'nodos/index.html',{"data":dirs})
 
 def actualizar(request):
+    no =  nodos.objects.all()
     dirs = os.listdir( path )
     for file in dirs:
         file0 = os.path.join(path,file)
@@ -100,7 +100,8 @@ def actualizar(request):
                     fixQuality= 0
             )
             n.save()
-    return  render(request, 'nodos/index.html',{"data":dirs})
+        
+    return  render(request, 'nodos/index.html',{"data":no})
 
 def detallesNodo(request,filename):
     name = "nodo"+ filename + ".txt"
@@ -109,10 +110,11 @@ def detallesNodo(request,filename):
     return render(request, 'nodos/detalles.html', {"numero":nodo.NumeroNodo,"data":nodo,"file":name})
 
 def index(request):
+
     n =  nodos.objects.all()
     return render(request, 'nodos/index.html',{"data":n})
 
-
+sudo python3 /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.142:8080
     
 def loginUser(request):
     logout(request)
