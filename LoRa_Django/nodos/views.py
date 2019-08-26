@@ -10,12 +10,13 @@ from .models import nodos
 import os, sys
 import json
 
-path = "//home//pi//Desktop//LoRa//"
+path = "//home//pi//tesis//LoRa_Django/"
 #path = "C:\\Users\\varit\\Desktop\\datos\\"
  
 
 def download(request,filename):
-    file = os.path.join(path,filename)
+    name = "nodo"+ filename + ".txt"
+    file = os.path.join(path,name)
     response = HttpResponse(open(file).read())#content_type='application/force-download') 
     response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(filename)
   #  response['X-Sendfile'] = smart_str(path) 
@@ -24,7 +25,8 @@ def download(request,filename):
     return response 
 
 def ver(request,filename):
-    file = os.path.join(path,filename)
+    name = "nodo"+ filename + ".txt"
+    file = os.path.join(path,name)
     file =open(file).read()
     # It's usually a good idea to set the 'Content-Length' header too. 
     # You can also set any other required headers: Cache-Control, etc. 
@@ -32,7 +34,7 @@ def ver(request,filename):
 
 
 def maestro(request):
-    path = "//home//pi//Desktop//LoRa//"
+    path = "//home//pi//tesis//datos"
     filename = "modo.txt"
     file = os.path.join(path,filename)
     f = open(file,'w')
@@ -42,7 +44,7 @@ def maestro(request):
     return  render(request, 'nodos/index.html',{"data":dirs})
 
 def esclavo(request):
-    path = "//home//pi//Desktop//LoRa//"
+    path = "//home//pi//tesis//datos"
     filename = "modo.txt"
     file = os.path.join(path,filename)
     f = open(file,'w')
@@ -59,7 +61,6 @@ def actualizar(request):
         data = open(file0).readlines()
         lastData = data[len(data)-1]
         data = lastData.split(",") 
-        print(data[0])
         try:
             n = nodos.objects.get(NumeroNodo = int(data[0])) 
             n.EstadoLora = True if int(data[1]) != 0 else False
@@ -105,16 +106,14 @@ def actualizar(request):
 
 def detallesNodo(request,filename):
     name = "nodo"+ filename + ".txt"
-    print(name)
     nodo = get_object_or_404(nodos,NumeroNodo = filename)
     return render(request, 'nodos/detalles.html', {"numero":nodo.NumeroNodo,"data":nodo,"file":name})
 
 def index(request):
-
     n =  nodos.objects.all()
     return render(request, 'nodos/index.html',{"data":n})
 
-sudo python3 /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.142:8080
+#sudo python3 /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.142:8080
     
 def loginUser(request):
     logout(request)
