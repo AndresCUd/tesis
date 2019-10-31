@@ -22,3 +22,6 @@ git clone https://github.com/AndresCUd/tesis.git
 cd tesis/LoRa_Django/
 sudo rm -r db.sqlite3
 sudo python3.6 manage.py runserver
+
+
+sudo pip install pynmea2

@@ -10,7 +10,7 @@ char mess[] = "echo '";
 char messLora[] = "' >> /home/pi/Desktop/LoRa/nodo";
 char messGnss[] = "' >> /home/pi/Desktop/DatosGnss/nodo";
 char mesEnd[] = ".txt";
-bool mode = true;
+bool mode =true;
 double secs = 0;
 time_t rawtime;
 char info1[300];
@@ -62,11 +62,6 @@ void setup()
     printf("SX1272 initialization failed\n");
 
   delay(1000);
-}
-void lectura()
-{
-  Serial.write()
-      printf("LEctura GPS ");
 }
 
 void esclavo(void)
@@ -172,7 +167,6 @@ void maestro(void)
       e = sx1272.getMaxCurrent();
       e = sx1272.getPayloadLength();
       // Esto de LoRa
-      lectura();
       sprintf(info1, "%d%s%d%s%d%s%f%s%d%s%d%s%d%s%d%s%d", sx1272._nodeAddress, coma, sx1272._bandwidth, coma, sx1272._maxCurrent, coma, paqueteEnviado, coma, paqueteRecibido, coma, secs, coma, sx1272._RSSI, coma, sx1272._payloadlength);
       system(info1);
     }
@@ -197,8 +191,8 @@ void maestro(void)
 }
 void datos()
 {
-  paqueteEnviado = system("python //home//pi//Desktop//LoRa//datos1.py");
-  paqueteRecibido = system("python //home//pi//Desktop//LoRa//datos2.py");
+  //paqueteEnviado = system("python //home//pi//Desktop//LoRa//datos1.py");
+  //paqueteRecibido = system("python //home//pi//Desktop//LoRa//datos2.py");
 }
 int main()
 {
@@ -206,7 +200,6 @@ int main()
   datos();
   while (1)
   {
-
     if (mode)
     {
       maestro();
