@@ -1,7 +1,7 @@
 import sys
 import os
 nodo=str(sys.argv[0])
-path = "//home//pi//tesis//datos//lora"
+path = "//home//pi//Desktop//datos"
 filename = "nodo"+nodo+".txt"
 file = os.path.join(path,filename)
 data = open(file,'r').readlines()

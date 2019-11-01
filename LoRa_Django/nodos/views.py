@@ -10,7 +10,7 @@ from .models import nodos
 import os, sys
 import json
 
-path = "//home//pi//tesis//LoRa_Django/"
+path = "//home//pi//Desktop//"
 #path = "C:\\Users\\varit\\Desktop\\datos\\"
  
 
@@ -34,9 +34,9 @@ def ver(request,filename):
 
 
 def maestro(request):
-    path = "//home//pi//tesis//datos"
+    path_m = path+"datos"
     filename = "modo.txt"
-    file = os.path.join(path,filename)
+    file = os.path.join(path_m,filename)
     f = open(file,'w')
     f.write("1,")
     f.close()
@@ -44,9 +44,9 @@ def maestro(request):
     return  render(request, 'nodos/index.html',{"data":dirs})
 
 def esclavo(request):
-    path = "//home//pi//tesis//datos"
+    path_e = path + "datos"
     filename = "modo.txt"
-    file = os.path.join(path,filename)
+    file = os.path.join(path_e,filename)
     f = open(file,'w')
     f.write("0,")
     f.close()
@@ -55,7 +55,7 @@ def esclavo(request):
 
 def actualizar(request):
     no =  nodos.objects.all()
-    dirs = os.listdir( path )
+    dirs = os.listdir( path + "datos" )
     for file in dirs:
         file0 = os.path.join(path,file)
         data = open(file0).readlines()
@@ -72,13 +72,13 @@ def actualizar(request):
             n.FuerzaSenal = int(data[6])
             n.CargaUtil = data[7]
              #GNSS
-            n.estadoGnss = False
-            n.NumeroSatelites = 1
-            n.dilucion =1
-            n.latitud = 1
-            n.longitud = 1
-            n.altitud = 1
-            n.fixQuality= 0
+            n.NumeroSatelites = data[8]
+            n.dilucion =data[9]
+            n.latitud = data[10]
+            n.longitud = data[11]
+            n.altitud = data[12]
+            n.fixQuality= data[13]
+            n.estadoGnss = True if int(data[13]) != 0 else False
             n.save()
         except nodos.DoesNotExist:
             n = nodos(
@@ -92,13 +92,13 @@ def actualizar(request):
                     FuerzaSenal = int(data[6]),
                     CargaUtil = data[7],
                     #GNSS
-                    estadoGnss = False,
-                    NumeroSatelites = 0,
-                    dilucion = 0,
-                    latitud = 0,
-                    longitud = 0,
-                    altitud = 0,
-                    fixQuality= 0
+                    NumeroSatelites = data[8],
+                    dilucion = data[9],
+                    latitud = data[10],
+                    longitud = data[11],
+                    altitud = data[12],
+                    fixQuality= data[13],
+                    estadoGnss = True if int(data[13]) != 0 else False
             )
             n.save()
         

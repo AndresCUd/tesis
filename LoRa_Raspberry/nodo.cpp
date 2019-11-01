@@ -8,7 +8,7 @@ int snr, rssi, rssil, proxNodo;
 char my_packet[300];
 char mess[] = "echo '";
 char messLora[] = "' >> /home/pi/Desktop/LoRa/nodo";
-char messGnss[] = "' >> /home/pi/Desktop/DatosGnss/nodo";
+char messGnss[] = "' >> /home/pi/Desktop/datos/nodo";
 char mesEnd[] = ".txt";
 bool mode =true;
 double secs = 0;
@@ -20,12 +20,12 @@ char coma[] = ",";
 char mgsA[] = "a";
 char mgsB[] = "b";
 char data;
+int numNodo = 9
 
 // GNSS Comunicacion Serial
 char buffer;
 
-void setup()
-{
+void setup(){
   Serial.begin(9600);
   // Power ON the module
   e = sx1272.ON();
@@ -52,7 +52,7 @@ void setup()
   printf("Setting Power: state %d\n", e);
 
   // Set the node address
-  e |= sx1272.setNodeAddress(9);
+  e |= sx1272.setNodeAddress(numNodo);
   printf("Setting Node address: state %d\n", e);
 
   // Print a success message
@@ -64,8 +64,7 @@ void setup()
   delay(1000);
 }
 
-void esclavo(void)
-{
+void esclavo(void){
   e = sx1272.receivePacketTimeoutACK(9000);
   if (e == 0)
   {
@@ -122,8 +121,8 @@ void esclavo(void)
   }
   delay(500);
 }
-void maestro(void)
-{
+
+void maestro(void){
   e = sx1272.getNodeAddress();
   int k = sx1272._nodeAddress;
   for (int i = 1; i < 10; i++)
@@ -152,8 +151,7 @@ void maestro(void)
           }
         }
       }
-      else
-      {
+      else  {
         sprintf(info1, "%s%d%s%d%s", mess, i, messLora, i, mesEnd);
         system(info1);
       }
@@ -189,10 +187,22 @@ void maestro(void)
     //k = 0;
   //}
 }
+
+void createInfo(void){
+
+}
 void datos()
 {
-  //paqueteEnviado = system("python //home//pi//Desktop//LoRa//datos1.py");
-  //paqueteRecibido = system("python //home//pi//Desktop//LoRa//datos2.py");
+  /* Recibe los paquetes enviados y recibidos por el nodo*/
+  char* formato= "python //home//pi//Desktop//LoRa_Raspberry//datos1.py %i";
+  sprintf(info1,formato,numNodo);
+  paqueteEnviado = system(info1);
+  char* formato= "python //home//pi//Desktop//LoRa_Raspberry//datos2.py %i";
+  sprintf(info1,formato,numNodo);
+  paqueteRecibido = system(info1);
+  /* Guarda en numero de nodo actual*/
+  sprintf(info1, "%s%d%s%s", mess, numNodo, messLora, mesEnd);
+  system(info1);
 }
 int main()
 {
@@ -200,6 +210,7 @@ int main()
   datos();
   while (1)
   {
+    createInfo();
     if (mode)
     {
       maestro();

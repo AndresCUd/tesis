@@ -2,53 +2,35 @@ import serial
 import time,os
 import pynmea2
 
-port = serial.Serial(port = "/dev/ttyACM0",
-                    baudrate=9600,
-                    timeout = 0.1,
-                    bytesize=serial.EIGHTBITS )
+port = serial.Serial(port = "/dev/ttyACM0",    baudrate=9600,                   timeout = 0.1,                    bytesize=serial.EIGHTBITS )
 # Inicia comunicacion serial con el sensor 
 port.close()
 port.open()
 txt=''
 data = ''
-status =''
-num_sats = 0
-horizontal_dil= 0
-altitude= 0
-altitude_units= ''
-latitude = 0
-longitude = 0
-spd_over_grnd=0
-gps_qual=0
-#f = open('//home//pi/Desktop//data//nodo.txt','w')
+
+f = open('//home//pi/Desktop//data//nodo.txt','w')
 #  nodo.txt se refiere a la  informacion propia de nodo tomanda desde el sensor
-time.sleep(5)
 # Se deja un tiempo para que el GNSS inicie y de informacion util de ubicacion
+
 while True: 
     while (port.in_waiting > 0) :
         txt += port.read(1)
-        print(txt)
         data += txt
-        print(data)
         if(txt == "$") :
-            if ("GNRMC" in data ):
-                print("Este es el dato")
-                print(data[0:len(data)-2])
-                msg = pynmea2.parse(data[0:len(data)-3])
-                status = msg.status
             if ("GNGGA" in data ):
                 print("Este es el dato")
                 print(data[0:len(data)-2])
                 msg = pynmea2.parse(data[0:len(data)-3])
-                latitude = msg.latitude
-                longitude = msg.longitude
-                #f.write(data)
-                time.sleep(5)
+                nmea = str(msg.num_sats)+','+str(msg.horizontal_dil)+','+str(msg.latitude)+','+str(msg.longitude)+','+str(msg.altitude)+','+str(msg.gps_qual)
+                f.write(nmea)
+                time.sleep(10)
             data =''
         txt=''
-#f.close()
+f.close()
 port.close()
 
+"""
         # Buscar la trama que tenga GNRMC  => 16:25:24  $GNRMC,162524.00,A,0438.09185,N,07404.10138,W,0.043,,311019,,,A,V*0A
         #GNRMC => Todo va separado por "," (Comas)
         #  A (0.1)  => A o V nos indica el estado de nuestra conexion GPS si es activa (A) o sin senal (V).
@@ -67,4 +49,4 @@ port.close()
         # 0.73  =>(5) dilución horizontal de la posición
         # 2609.1,M =>(6) Indican la altitud en metros sobre el nivel del mar esto es sumamente importante en sistemas de telemetría aéreos o para analizar los datos de vuelo de por ejemplo un Dron
         # 4.7,M, =>(7) indican una altitud relativa de la ubicación útil en aplicaciones de aproximación en la tierra mediante una elipsoide
-      
+      """
