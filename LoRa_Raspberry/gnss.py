@@ -1,35 +1,43 @@
 import serial
-import time,os
+import time, os
 import pynmea2
 
-port = serial.Serial(port = "/dev/ttyACM0",    baudrate=9600,                   timeout = 0.1,                    bytesize=serial.EIGHTBITS )
-# Inicia comunicacion serial con el sensor 
+port = serial.Serial(port="/dev/ttyACM0",
+                     baudrate=9600,
+                     timeout=0.1,
+                     bytesize=serial.EIGHTBITS)
+# Inicia comunicacion serial con el sensor
 port.close()
 port.open()
-txt=''
+txt = ''
 data = ''
-
-f = open('//home//pi/Desktop//data//nodo.txt','w')
-#  nodo.txt se refiere a la  informacion propia de nodo tomanda desde el sensor
+f = open('//home//pi//Desktop//data//nodo.txt', 'a+')
+# nodo.txt se refiere a la  informacion propia de nodo tomanda desde el sensor
 # Se deja un tiempo para que el GNSS inicie y de informacion util de ubicacion
-
-while True: 
-    while (port.in_waiting > 0) :
+i = 0
+while True:
+    while (port.in_waiting > 0):
         txt += port.read(1)
         data += txt
-        if(txt == "$") :
-            if ("GNGGA" in data ):
+        if (txt == "$"):
+            if ("GNGGA" in data):
                 print("Este es el dato")
-                print(data[0:len(data)-2])
-                msg = pynmea2.parse(data[0:len(data)-3])
-                nmea = str(msg.num_sats)+','+str(msg.horizontal_dil)+','+str(msg.latitude)+','+str(msg.longitude)+','+str(msg.altitude)+','+str(msg.gps_qual)
+                print(data[0:len(data) - 2])
+                msg = pynmea2.parse(data[0:len(data) - 3])
+                nmea = str(msg.num_sats) + ',' + str(
+                    msg.horizontal_dil) + ',' + str(msg.latitude) + ',' + str(
+                        msg.longitude) + ',' + str(msg.altitude) + ',' + str(
+                            msg.gps_qual) + '\r\n'
                 f.write(nmea)
-                time.sleep(10)
-            data =''
-        txt=''
+                data = ''
+                i = 1
+            data = ''
+        txt = ''
+    if i == 1:
+        print(nmea)
+        break
 f.close()
 port.close()
-
 """
         # Buscar la trama que tenga GNRMC  => 16:25:24  $GNRMC,162524.00,A,0438.09185,N,07404.10138,W,0.043,,311019,,,A,V*0A
         #GNRMC => Todo va separado por "," (Comas)

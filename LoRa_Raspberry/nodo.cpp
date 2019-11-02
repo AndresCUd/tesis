@@ -10,7 +10,7 @@ char mess[] = "echo '";
 char messLora[] = "' >> /home/pi/Desktop/LoRa/nodo";
 char messGnss[] = "' >> /home/pi/Desktop/datos/nodo";
 char mesEnd[] = ".txt";
-bool mode =true;
+bool mode = false;
 double secs = 0;
 time_t rawtime;
 char info1[300];
@@ -20,7 +20,7 @@ char coma[] = ",";
 char mgsA[] = "a";
 char mgsB[] = "b";
 char data;
-int numNodo = 9
+int numNodo = 9;
 
 // GNSS Comunicacion Serial
 char buffer;
@@ -92,10 +92,13 @@ void esclavo(void){
       //sprintf(info1,"%d%s%d%s%d%s%f%s%d%s%d%s%d%s%d%s%d",sx1272._nodeAddress,coma,paqueteEnviado,coma,paqueteRecibido,coma,secs,coma,sx1272._RSSI,coma,sx1272._bandwidth,coma,sx1272._channel,coma,sx1272._maxCurrent,coma,sx1272._payloadlength);
       //Total Info
       //sprintf(info1,"%s%s",info,info2);
+      printf("Message :%s\n", info1);
+      sprintf(infoT, "%s%s%s%d%s", mess, info1, messLora, numNodo, mesEnd);
+      printf("Message :%s\n", infoT);
+      system(infoT);
       e = 2;
       int error = 0;
-      while (e > 1)
-      {
+      while (e > 1){
         gettimeofday(&start, NULL);
         e = sx1272.sendPacketTimeoutACK(paqOrigin, info1);
         gettimeofday(&stop, NULL);
@@ -117,6 +120,17 @@ void esclavo(void){
   }
   else
   {
+    e = sx1272.getNodeAddress();
+    e = sx1272.getRSSI();
+    e = sx1272.getBW();
+    e = sx1272.getMaxCurrent();
+    e = sx1272.getPayloadLength();
+    // Esto de LoRa
+    sprintf(info1, "%d%s%d%s%d%s%f%s%d%s%d%s%d%s%d%s%d", sx1272._nodeAddress, coma, sx1272._bandwidth, coma, sx1272._maxCurrent, coma, paqueteEnviado, coma, paqueteRecibido, coma, secs, coma, sx1272._RSSI, coma, sx1272._payloadlength);
+    printf("Message :%s\n", info1);
+    sprintf(infoT, "%s%s%s%d%s", mess, info1, messLora, numNodo, mesEnd);
+    printf("Message :%s\n", infoT);
+    system(infoT);
     printf("No hay hay Permiso\n");
   }
   delay(500);
@@ -193,21 +207,13 @@ void createInfo(void){
 }
 void datos()
 {
-  /* Recibe los paquetes enviados y recibidos por el nodo*/
-  char* formato= "python //home//pi//Desktop//LoRa_Raspberry//datos1.py %i";
-  sprintf(info1,formato,numNodo);
-  paqueteEnviado = system(info1);
-  char* formato= "python //home//pi//Desktop//LoRa_Raspberry//datos2.py %i";
-  sprintf(info1,formato,numNodo);
-  paqueteRecibido = system(info1);
-  /* Guarda en numero de nodo actual*/
-  sprintf(info1, "%s%d%s%s", mess, numNodo, messLora, mesEnd);
-  system(info1);
+  //paqueteEnviado = system("python //home//pi//Desktop//LoRa//datos1.py");
+  //paqueteRecibido = system("python //home//pi//Desktop//LoRa//datos2.py");
 }
 int main()
 {
   setup();
-  datos();
+ // datos();
   while (1)
   {
     createInfo();
@@ -219,6 +225,7 @@ int main()
     {
       esclavo();
     }
+    char formato = system("sudo python  /home/pi/Desktop/data/gnss.py");
   }
   return (0);
 }

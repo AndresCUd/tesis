@@ -19,9 +19,15 @@ sudo apt-get clean -y
 pip3.6 install Django==2.2.4
 
 git clone https://github.com/AndresCUd/tesis.git
-cd tesis/LoRa_Django/
+mv tesis datos
+cd datos/LoRa_Django/
+# /home/pi/datos/
 sudo rm -r db.sqlite3
 sudo python3.6 manage.py runserver
 
-
 sudo pip install pynmea2
+
+sudo nano /etc/rc.local
+# Add to end to the file
+sudo python  /home/pi/datos/LoRa_Raspberry/gnss.py &
+#sudo /home/pi/cooking/examples/LoRa/nodo.cpp_exe &

@@ -10,7 +10,7 @@ from .models import nodos
 import os, sys
 import json
 
-path = "//home//pi//Desktop//"
+path = "//home//pi//Desktop//datos"
 #path = "C:\\Users\\varit\\Desktop\\datos\\"
  
 
@@ -34,7 +34,7 @@ def ver(request,filename):
 
 
 def maestro(request):
-    path_m = path+"datos"
+    path_m = path
     filename = "modo.txt"
     file = os.path.join(path_m,filename)
     f = open(file,'w')
@@ -44,7 +44,7 @@ def maestro(request):
     return  render(request, 'nodos/index.html',{"data":dirs})
 
 def esclavo(request):
-    path_e = path + "datos"
+    path_e = path 
     filename = "modo.txt"
     file = os.path.join(path_e,filename)
     f = open(file,'w')
@@ -55,7 +55,7 @@ def esclavo(request):
 
 def actualizar(request):
     no =  nodos.objects.all()
-    dirs = os.listdir( path + "datos" )
+    dirs = os.listdir( path )
     for file in dirs:
         file0 = os.path.join(path,file)
         data = open(file0).readlines()
