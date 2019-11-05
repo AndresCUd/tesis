@@ -7,8 +7,7 @@ int e, paqueteEnviado = 0, paqueteRecibido = 0, paqOrigin = 0;
 int snr, rssi, rssil, proxNodo;
 char my_packet[300];
 char mess[] = "echo '";
-char messLora[] = "' >> /home/pi/Desktop/LoRa/nodo";
-char messGnss[] = "' >> /home/pi/Desktop/datos/nodo";
+char messLora[] = "' >> /home/pi/Desktop/data/nodo";
 char mesEnd[] = ".txt";
 bool mode = false;
 double secs = 0;
@@ -66,8 +65,14 @@ void setup(){
 
 void esclavo(void){
   e = sx1272.receivePacketTimeoutACK(9000);
-  if (e == 0)
-  {
+ // Formato Informacion
+  // Nombre,#PaquetesEnviado,#PaquetesRecivudo,TimepoEnvio,RSSI,BW,Canal,Corriente,Payload
+  e = sx1272.getNodeAddress();
+  e = sx1272.getRSSI();
+  e = sx1272.getBW();
+  e = sx1272.getMaxCurrent();
+  e = sx1272.getPayloadLength();
+  if (e == 0) {
     for (unsigned int i = 0; i < sx1272.packet_received.length; i++)
     {
       my_packet[i] = (char)sx1272.packet_received.data[i];
@@ -79,19 +84,8 @@ void esclavo(void){
       printf("Enviado al Nodo %d \n", paqOrigin);
       paqueteRecibido = paqueteRecibido + 1;
       struct timeval start, stop;
-      // Formato Informacion
-      // Nombre,#PaquetesEnviado,#PaquetesRecivudo,TimepoEnvio,RSSI,BW,Canal,Corriente,Payload
-      e = sx1272.getNodeAddress();
-      e = sx1272.getRSSI();
-      e = sx1272.getBW();
-      e = sx1272.getMaxCurrent();
-      e = sx1272.getPayloadLength();
       // Esto de LoRa
       sprintf(info1, "%d%s%d%s%d%s%f%s%d%s%d%s%d%s%d%s%d", sx1272._nodeAddress, coma, sx1272._bandwidth, coma, sx1272._maxCurrent, coma, paqueteEnviado, coma, paqueteRecibido, coma, secs, coma, sx1272._RSSI, coma, sx1272._payloadlength);
-      // Estado GNSS + Datos
-      //sprintf(info1,"%d%s%d%s%d%s%f%s%d%s%d%s%d%s%d%s%d",sx1272._nodeAddress,coma,paqueteEnviado,coma,paqueteRecibido,coma,secs,coma,sx1272._RSSI,coma,sx1272._bandwidth,coma,sx1272._channel,coma,sx1272._maxCurrent,coma,sx1272._payloadlength);
-      //Total Info
-      //sprintf(info1,"%s%s",info,info2);
       printf("Message :%s\n", info1);
       sprintf(infoT, "%s%s%s%d%s", mess, info1, messLora, numNodo, mesEnd);
       printf("Message :%s\n", infoT);
@@ -117,14 +111,7 @@ void esclavo(void){
     {
       mode = true;
     }
-  }
-  else
-  {
-    e = sx1272.getNodeAddress();
-    e = sx1272.getRSSI();
-    e = sx1272.getBW();
-    e = sx1272.getMaxCurrent();
-    e = sx1272.getPayloadLength();
+  } else {
     // Esto de LoRa
     sprintf(info1, "%d%s%d%s%d%s%f%s%d%s%d%s%d%s%d%s%d", sx1272._nodeAddress, coma, sx1272._bandwidth, coma, sx1272._maxCurrent, coma, paqueteEnviado, coma, paqueteRecibido, coma, secs, coma, sx1272._RSSI, coma, sx1272._payloadlength);
     printf("Message :%s\n", info1);
@@ -207,8 +194,8 @@ void createInfo(void){
 }
 void datos()
 {
-  //paqueteEnviado = system("python //home//pi//Desktop//LoRa//datos1.py");
-  //paqueteRecibido = system("python //home//pi//Desktop//LoRa//datos2.py");
+  //paqueteEnviado = system("sudo python //home//pi//Desktop//LoRa//datos1.py");
+  //paqueteRecibido = system("sudo python //home//pi//Desktop//LoRa//datos2.py");
 }
 int main()
 {
@@ -225,6 +212,7 @@ int main()
     {
       esclavo();
     }
+    printf("No \n");
     char formato = system("sudo python  /home/pi/Desktop/data/gnss.py");
   }
   return (0);

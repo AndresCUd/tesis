@@ -1,3 +1,4 @@
+## Instaler Python
 sudo apt-get update
 sudo apt-get install build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev -y
 wget https://www.python.org/ftp/python/3.6.5/Python-3.6.5.tar.xz
@@ -15,12 +16,25 @@ sudo apt-get --purge remove libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev -
 sudo apt-get --purge remove libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev -y
 sudo apt-get autoremove -y
 sudo apt-get clean -y
-
+## Install django
 pip3.6 install Django==2.2.4
+
+## Instaler ardupi
+
+wget https://www.cooking-hacks.com/media/cooking/images/documentation/raspberry_arduino_shield/raspberrypi.zip && unzip raspberrypi.zip && cd cooking/arduPi && chmod +x install_arduPi && ./install_arduPi && rm install_arduPi && cd ../..
+wget https://www.cooking-hacks.com/media/cooking/images/documentation/tutorial_SX1272/arduPi-api_LoRa_v1_4.zip && unzip -u arduPi-api_LoRa_v1_4.zip && cd cooking/examples/LoRa && chmod +x cook.sh && cd ../../..
 
 git clone https://github.com/AndresCUd/tesis.git
 mv tesis datos
-cd datos/LoRa_Django/
+cd  /home/pi/Desktop
+mkdir data
+mkdir LoRa
+cd  /home/pi/datos/LoRa_Raspberry
+mv datos1.py /home/pi/Desktop/LoRa
+mv datos2.py /home/pi/Desktop/LoRa
+mv gnss.py  /home/pi/Desktop/LoRa
+
+
 # /home/pi/datos/
 sudo rm -r db.sqlite3
 sudo python3.6 manage.py runserver
@@ -30,9 +44,10 @@ sudo pip install pynmea2
 sudo nano /etc/rc.local
 # Add to end to the file
 sudo python  /home/pi/datos/LoRa_Raspberry/gnss.py &
+sudo /home/pi/cooking/examples/LoRa/nodo.cpp_exe &
 #sudo /home/pi/cooking/examples/LoRa/nodo.cpp_exe &
 
-
+cd /home/pi/Desktop/ mkdir data
 
 
 

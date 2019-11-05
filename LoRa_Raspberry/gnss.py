@@ -1,6 +1,9 @@
 import serial
 import time, os
 import pynmea2
+import sys
+import os
+nodo=str(sys.argv[1])
 
 port = serial.Serial(port="/dev/ttyACM0",
                      baudrate=9600,
@@ -11,7 +14,7 @@ port.close()
 port.open()
 txt = ''
 data = ''
-f = open('//home//pi//Desktop//data//nodo.txt', 'a+')
+f = open('//home//pi//Desktop//data//nodo'+ nodo +'.txt', 'a+')
 # nodo.txt se refiere a la  informacion propia de nodo tomanda desde el sensor
 # Se deja un tiempo para que el GNSS inicie y de informacion util de ubicacion
 i = 0
