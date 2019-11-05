@@ -61,6 +61,7 @@ def actualizar(request):
         data = open(file0).readlines()
         lastData = data[len(data)-1]
         data = lastData.split(",") 
+        #9,2,240,0,2,255,0.000000,-96,1 2,0.57,4.634839,-74.0682265,2591.6,1
         try:
             n = nodos.objects.get(NumeroNodo = int(data[0])) 
             n.EstadoLora = True if int(data[1]) != 0 else False
