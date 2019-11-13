@@ -162,7 +162,8 @@ void createInfo(void){
 }
 
 void datos(){
-    system("sudo python  //home//pi//Desktop//LoRa//datos1.py");
+    sprintf(info2,"%s%d", "sudo python  //home//pi//Desktop//LoRa//datos1.py " , numNodo);
+    system(info2);
     e = sx1272.getNodeAddress();
     sprintf(infoT, "%s%d%s",  stringNodo,sx1272._nodeAddress,mesEnd);
     FILE *fp;
@@ -190,3 +191,5 @@ int main(){
   }
   return (0);
 }
+
+/// cd atos/cooking/examples/LoRa 

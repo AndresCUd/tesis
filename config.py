@@ -22,7 +22,7 @@ pip3.6 install Django==2.2.4
 ## Instaler ardupi
 
 git clone https://github.com/AndresCUd/tesis.git
- mv tesis /home/pi/datos
+mv tesis /home/pi/datos
 cd datos/
 unzip raspberrypi.zip && cd cooking/arduPi && chmod +x install_arduPi && ./install_arduPi && rm install_arduPi && cd ../..
 unzip -u arduPi-api_LoRa_v1_4.zip && cd cooking/examples/LoRa && chmod +x cook.sh && cd ../../..

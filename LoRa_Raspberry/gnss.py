@@ -37,9 +37,9 @@ while True:
     if (data.startswith("$GNGGA")):
         nmea = str(infoLora) + str(data.rstrip('$\r\n')) 
         msg = pynmea2.parse(data)
-        if msg.num_sats > 3:
+        if msg.gps_qual == 1:
             i = 1
-        line_prepender(nodo,nmea)
+            line_prepender(nodo,nmea)
     if i == 1:
         break
  
