@@ -5,9 +5,11 @@
 
 int e, paqueteEnviado = 0, paqueteRecibido = 0, paqOrigin = 0;
 int snr, rssi, rssil, proxNodo;
+int posicion = 1;
+int p = 0;
+int valor = 0;
 char my_packet[300];
 char mess[] = "echo '";
-char messLora[] = "' >> /home/pi/Desktop/data/nodo";
 char mesEnd[] = ".txt";
 bool mode = false;
 double secs = 0;
@@ -15,15 +17,17 @@ time_t rawtime;
 char info1[300];
 char info2[300];
 char infoT[300];
-char toGnss[] = "sudo python  /home/pi/Desktop/data/gnss.py ";
+char toGnss[] = "sudo python  //home//pi//Desktop//LoRa//gnss.py ";
 char coma[] = " ";
 char mgsA[] = "a";
 char mgsB[] = "b";
 char data;
 int numNodo = 9;
-
 // GNSS Comunicacion Serial
-char buffer;
+char buff[255];
+
+char stringNodo[]  ="//home//pi//Desktop//data//nodo";
+
 
 void setup(){
   Serial.begin(9600);
@@ -65,144 +69,123 @@ void setup(){
 }
 
 void esclavo(void){
-  e = sx1272.receivePacketTimeoutACK(9000);
+  e = sx1272.receivePacketTimeoutACK(10000);
   if (e == 0) {
-    for (unsigned int i = 0; i < sx1272.packet_received.length; i++)
-    {
+    for (unsigned int i = 0; i < sx1272.packet_received.length; i++)    {
       my_packet[i] = (char)sx1272.packet_received.data[i];
     }
-    printf(my_packet);
-    if (my_packet[0] == 97)
-    {
+    if (my_packet[0] == 97) {
       paqOrigin = (int)sx1272.packet_received.src;
-      printf("Enviado al Nodo %d \n", paqOrigin);
       paqueteRecibido = paqueteRecibido + 1;
       struct timeval start, stop;
       e = 2;
       int error = 0;
       while (e > 1){
         gettimeofday(&start, NULL);
-        e = sx1272.sendPacketTimeoutACK(paqOrigin, info1);
+        e = sx1272.sendPacketTimeoutACK(paqOrigin, buff);
         gettimeofday(&stop, NULL);
         secs = (double)(stop.tv_usec - start.tv_usec) / 1000000 + (double)(stop.tv_sec - start.tv_sec);
         paqueteEnviado = paqueteEnviado + 1;
-        printf("Info regresada %s:\n ", info1);
-        delay(500);
+        printf("Info regresada %s:\n ", buff);
         error = error + 1;
-        if (error == 4)
-        {
+        if (error == 2){
           break;
         }
       }
     }
-    else if (my_packet[0] == 98)
-    {
+    else if (my_packet[0] == 98){
       mode = true;
     }
   } else {
     printf("No Se pidieron Datos \n");
   }
-  delay(500);
+  delay(1000);
 }
 
 void maestro(void){
   e = sx1272.getNodeAddress();
   int k = sx1272._nodeAddress;
-  for (int i = 1; i < 10; i++)
-  {
-    if (i != k)
-    {
+  for (int i = 1; i < 10; i++)  {
+    if (i != k)    {
       e = sx1272.sendPacketTimeoutACK(i, mgsA);
-      printf("Pregunta al nodo %d\n", i);
-      if (e == 0)
-      {
+      printf("Pregunta al numNodo %d\n", i);
+      if (e == 0) {
         e = 3;
-        while (e > 2)
-        {
+        while (e > 2) {
           e = sx1272.receivePacketTimeoutACK(10000);
-          if (e == 0)
-          {
-            //printf("Receive packet, state %d, Nodo %d \n",e,i);
-            for (unsigned int j = 0; j < sx1272.packet_received.length; j++)
-            {
-              my_packet[j] = (char)sx1272.packet_received.data[j];
-            }
-            //e = sx1272.getNodeAddress();
-            sprintf(info1, "%s%s%s%d%s", mess, my_packet, messLora, i, mesEnd);
-            printf("Message :%s\n", my_packet);
-            system(info1);
+          if (e == 0){
+            for (unsigned int j = 0; j < sx1272.packet_received.length; j++){
+              my_packet[j] = (char)sx1272.packet_received.data[j];}
           }
         }
-      }
-      else  {
-        sprintf(info1, "%s%d%s%d%s", mess, i, messLora, i, mesEnd);
-        system(info1);
-      }
-      delay(500);
+      } 
     }
   }
-  //while (mode)
-  //{
-   // for (int j = k + 1; j < 10; j++)
-    //{
-     // if (j != k)
-      //{
-       // printf("Message :%d\n", j);
-        //e = sx1272.sendPacketTimeoutACK(j, mgsB);
-        //if (e == 0)
-        //{
-         // mode = false;
-          //break;
-       // }
-     // }
-   // }
-    //k = 0;
-  //}
+}
+
+int toString(char a[]) {
+  int c, sign, offset, n;
+ 
+  if (a[0] == '-') {  // Handle negative integers
+    sign = -1;
+  }
+  if (sign == -1) {  // Set starting position to convert
+    offset = 1;
+  }
+  else {
+    offset = 0;
+  }
+  n = 0;
+  for (c = offset; a[c] != '\0'; c++) {
+    n = n * 10 + a[c] - '0';
+  }
+  if (sign == -1) {
+    n = -n;
+  }
+  return n;
 }
 
 void createInfo(void){
-
-  //sprintf(info1, "%s%d%d%d%f%d%d%d%d",toGnss, sx1272._nodeAddress, sx1272._bandwidth, sx1272._maxCurrent, paqueteEnviado, paqueteRecibido,  secs, sx1272._RSSI, sx1272._payloadlength);
-  sprintf(info1, "%s%d%s%d%s%d%s%d%s%d%s%f%s%d%s%d",  toGnss,sx1272._nodeAddress, coma, sx1272._bandwidth, coma, sx1272._maxCurrent, coma, paqueteEnviado, coma, paqueteRecibido, coma, secs, coma, sx1272._RSSI, coma, sx1272._payloadlength);
-    
-  printf("Message :%s\n", info1);
-  char formato = system(info1);
-  //"sudo python  /home/pi/Desktop/data/gnss.py" sx1272._nodeAddress sx1272._bandwidth sx1272._maxCurrent paqueteEnviado paqueteRecibido sx1272._RSSI sx1272._payloadlength secs);
-  /*
-  formato = str(msg.num_sats) + ',' + str(
-                  msg.horizontal_dil) + ',' + str(msg.latitude) + ',' + str(
-                      msg.longitude) + ',' + str(msg.altitude) + ',' + str(
-                          msg.gps_qual) + '\r\n'
-  */
-  // Formato Informacion
-  // Nombre,#PaquetesEnviado,#PaquetesRecivudo,TimepoEnvio,RSSI,BW,Canal,Corriente,Payload
   e = sx1272.getNodeAddress();
   e = sx1272.getRSSI();
   e = sx1272.getBW();
   e = sx1272.getMaxCurrent();
   e = sx1272.getPayloadLength();
+  sprintf(info1, "%s%d%s%d%s%d%s%d%s%d%s%f%s%d%s%d",  toGnss,sx1272._nodeAddress, coma, sx1272._bandwidth, coma, sx1272._maxCurrent, coma, paqueteEnviado, coma, paqueteRecibido, coma, secs, coma, sx1272._RSSI, coma, sx1272._payloadlength);
+  int a =system(info1);
+  if (a == 0){
+    FILE *fp;
+    fp = fopen(infoT, "r");
+    fgets(buff, 255, (FILE*)fp);
+    fclose(fp);
+  }
 }
-void datos()
-{
-  //paqueteEnviado = system("sudo python //home//pi//Desktop//LoRa//datos1.py");
-  //paqueteRecibido = system("sudo python //home//pi//Desktop//LoRa//datos2.py");
-}
-int main()
-{
-  setup();
- // datos();
-  while (1)
-  {
-    createInfo();
-    if (mode)
-    {
-      maestro();
-    }
-    else
-    {
-      esclavo();
-    }
 
+void datos(){
+    e = sx1272.getNodeAddress();
+    sprintf(infoT, "%s%d%s",  stringNodo,sx1272._nodeAddress,mesEnd);
+    FILE *fp;
+    fp = fopen(infoT, "r");
+    fgets(buff, 255, (FILE*)fp);
+    fclose(fp);
+    char *p;
+    int j = 1;
+    p = strtok (buff,",");
+    while (p!= NULL){
+      if (j == 3){paqueteEnviado = toString(p);}
+      if (j == 4){paqueteRecibido = toString(p);} 
+      p = strtok (NULL, ",");
+    j = j+1;
+    }
+}
+ 
+int main(){
+  setup();
+  datos();
+  while (1){    
+  if (mode){maestro();}
+    else{esclavo();}
+    createInfo();
   }
   return (0);
 }

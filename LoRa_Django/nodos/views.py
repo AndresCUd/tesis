@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import nodos
 import os, sys
 import json
-
+import pynmea2
 path = "//home//pi//Desktop//datos"
 #path = "C:\\Users\\varit\\Desktop\\datos\\"
  
@@ -61,7 +61,7 @@ def actualizar(request):
         data = open(file0).readlines()
         lastData = data[len(data)-1]
         data = lastData.split(",") 
-        #9,2,240,0,2,255,0.000000,-96,1 2,0.57,4.634839,-74.0682265,2591.6,1
+        #9,1,2,3,4,5,6,0$GNGGA,185951.00,0438.09587,N,07404.10108,W,1,12,0.65,2601.3,M,4.7$
         try:
             n = nodos.objects.get(NumeroNodo = int(data[0])) 
             n.EstadoLora = True if int(data[1]) != 0 else False

@@ -1,3 +1,5 @@
 django == 2.2.4
 django-bootstrap4
 django-tables2
+pynmea2
+#pip install -r requirements.txt

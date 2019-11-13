@@ -22,20 +22,17 @@ pip3.6 install Django==2.2.4
 ## Instaler ardupi
 
 git clone https://github.com/AndresCUd/tesis.git
-mv datos /home/pi/datos
-
+ mv tesis /home/pi/datos
 cd datos/
 unzip raspberrypi.zip && cd cooking/arduPi && chmod +x install_arduPi && ./install_arduPi && rm install_arduPi && cd ../..
 unzip -u arduPi-api_LoRa_v1_4.zip && cd cooking/examples/LoRa && chmod +x cook.sh && cd ../../..
 mv  /home/pi/datos/LoRa_Raspberry/nodo.cpp  /home/pi/datos/cooking/examples/LoRa 
 cd  /home/pi/datos/cooking/examples/LoRa 
 sudo ./cook.sh nodo.cpp
+mv  nodo.cpp_exe   /home/pi/Desktop/LoRa
 cd /home/pi/Desktop/
 mkdir data
 mkdir LoRa
-
-
-
 cd  /home/pi/datos/LoRa_Raspberry
 mv datos1.py /home/pi/Desktop/LoRa
 mv datos2.py /home/pi/Desktop/LoRa
@@ -46,15 +43,15 @@ mv gnss.py  /home/pi/Desktop/LoRa
 sudo rm -r db.sqlite3
 sudo python3.6 manage.py runserver
 
-sudo pip install pynmea2
-
 sudo nano /etc/rc.local
 # Add to end to the file
+ 
 
-sudo /home/pi/datos/cooking/examples/LoRa/nodo.cpp_exe &
+sudo /home/pi/Desktop/LoRa/nodo.cpp_exe &
 #sudo /home/pi/cooking/examples/LoRa/nodo.cpp_exe &
 
-cd /home/pi/Desktop/ mkdir data
+cd /home/pi/Desktop/ 
+mkdir data
 
 
 
