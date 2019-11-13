@@ -162,6 +162,7 @@ void createInfo(void){
 }
 
 void datos(){
+    system("sudo python  //home//pi//Desktop//LoRa//datos1.py");
     e = sx1272.getNodeAddress();
     sprintf(infoT, "%s%d%s",  stringNodo,sx1272._nodeAddress,mesEnd);
     FILE *fp;

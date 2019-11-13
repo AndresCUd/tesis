@@ -35,7 +35,6 @@ mkdir data
 mkdir LoRa
 cd  /home/pi/datos/LoRa_Raspberry
 mv datos1.py /home/pi/Desktop/LoRa
-mv datos2.py /home/pi/Desktop/LoRa
 mv gnss.py  /home/pi/Desktop/LoRa
 
 

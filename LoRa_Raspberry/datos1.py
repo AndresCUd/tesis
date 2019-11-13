@@ -3,9 +3,13 @@ import os
 nodo=str(sys.argv[1])
 path = "//home//pi//Desktop//data"
 filename = "nodo"+nodo+".txt"
-file = os.path.join(path,filename)
-data = open(file,'r').readlines()
-lastData = data[len(data) - 1]
-data =  lastData.split(",") 
-print(int(data[3]))
+a = os.path.exists(path+filename)
+hola = nodo + ",0,0,0,0"
+if not a:
+    f = os.path.join(path,filename)
+    data = open(f,'w')
+    data.write(hola)
+    data.close()    
+
+
 

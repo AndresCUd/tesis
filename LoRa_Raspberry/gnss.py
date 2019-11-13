@@ -20,7 +20,6 @@ port = serial.Serial(port="/dev/ttyACM0",
 port.close()
 port.open()
 data = ''
-
 # nodo.txt se refiere a la  informacion propia de nodo tomanda desde el sensor
 # Se deja un tiempo para que el GNSS inicie y de informacion util de ubicacion
 i = 0
