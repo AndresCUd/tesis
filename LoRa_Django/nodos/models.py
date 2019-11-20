@@ -21,9 +21,9 @@ class nodos(models.Model):
    #GNSS
    estadoGnss = models.BooleanField(default=False)
    NumeroSatelites = models.IntegerField(default = 0)
-   dilucion = models.IntegerField(default= 0)
-   latitud =  models.IntegerField(default=0)
-   longitud = models.IntegerField(default=0)
-   altitud = models.IntegerField(default=0)
+   dilucion = models.FloatField(default= 0)
+   latitud =  models.FloatField(default=0)
+   longitud = models.FloatField(default=0)
+   altitud = models.FloatField(default=0)
    fixQuality=models.IntegerField(default=0)
   

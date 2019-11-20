@@ -18,6 +18,7 @@ char info1[300];
 char info2[300];
 char infoT[300];
 char toGnss[] = "sudo python  //home//pi//Desktop//LoRa//gnss.py ";
+char toSave[] = "sudo python  //home//pi//Desktop//LoRa//saveData.py ";
 char coma[] = " ";
 char mgsA[] = "a";
 char mgsB[] = "b";
@@ -116,7 +117,11 @@ void maestro(void){
           if (e == 0){
             for (unsigned int j = 0; j < sx1272.packet_received.length; j++){
               my_packet[j] = (char)sx1272.packet_received.data[j];}
+              sprintf(info1, "%s%d%s%s",  toSave,i, coma ,my_packet);
+              system(info1);
+              printf("Info regresada %s:\n ", info1);
           }
+
         }
       } 
     }
