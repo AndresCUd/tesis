@@ -15,10 +15,10 @@ path = "/home/pi/Desktop/data/"
  
 
 def download(request,filename):
-    f = os.path.join(path,filename)
-    response = HttpResponse(open(f.read())#content_type='application/force-download') 
+    file = os.path.join(path,filename)
+    response = HttpResponse(open(file).read())#content_type='application/force-download') 
     response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(filename)
-  #  response['X-Sendfile'] = smart_str(path) 
+    #response['X-Sendfile'] = smart_str(path) 
     # It's usually a good idea to set the 'Content-Length' header too. 
     # You can also set any other required headers: Cache-Control, etc. 
     return response 
@@ -57,7 +57,7 @@ def actualizar(request):
     for file in dirs:
         file0 = os.path.join(path,file)
         data = open(file0, "r").readlines()
-        lastData = data[0]
+        lastData = data[len(data)-1]
         data0 = lastData.split("$") 
         data = data0[0].split(",") 
         if len(data0[1]) > 10:

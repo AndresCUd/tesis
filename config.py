@@ -20,11 +20,10 @@ alias python='python3.6'
 sudo pip install Django==2.2.4
 ## Instaler ardupi
 git clone https://github.com/AndresCUd/tesis.git
-mv tesis /home/pi/datos
 cd /home/pi/Desktop/
 mkdir data
 mkdir LoRa
-cd  /home/pi/datos/LoRa_Raspberry
+cd  /home/pi/tesis/LoRa_Raspberry
 mv datos1.py /home/pi/Desktop/LoRa/
 mv gnss.py  /home/pi/Desktop/LoRa/
 mv saveData.py  /home/pi/Desktop/LoRa/
@@ -37,21 +36,20 @@ sudo python  //home//pi//Desktop//LoRa//datos1.py 6
 sudo python  //home//pi//Desktop//LoRa//datos1.py 7
 sudo python  //home//pi//Desktop//LoRa//datos1.py 8
 sudo python  //home//pi//Desktop//LoRa//datos1.py 9
-cd  /home/pi/datos/LoRa_Django
+cd  /home/pi/tesis/LoRa_Django
 sudo pip3.6 install -r requirements.txt
-cd   /home/pi/Desktop/data/
-cd /home/pi/datos
+cd /home/pi/tesis
 unzip raspberrypi.zip && cd cooking/arduPi && chmod +x install_arduPi && ./install_arduPi && rm install_arduPi && cd ../..
 unzip -u arduPi-api_LoRa_v1_4.zip && cd cooking/examples/LoRa && chmod +x cook.sh && cd ../../..
-mv  /home/pi/datos/LoRa_Raspberry/nodo.cpp  /home/pi/datos/cooking/examples/LoRa 
-cd  /home/pi/datos/cooking/examples/LoRa 
+mv  /home/pi/tesis/LoRa_Raspberry/nodo.cpp  /home/pi/tesis/cooking/examples/LoRa 
+cd  /home/pi/tesis/cooking/examples/LoRa 
 sudo ./cook.sh nodo.cpp
 mv  nodo.cpp_exe   /home/pi/Desktop/LoRa/
 # /home/pi/datos/
 sudo nano /etc/rc.local
 # Add to end to the file
 # /home/pi/datos/LoRa_Django/nodos/views.py
-sudo python3.6  /home/pi/datos/LoRa_Django/manage.py runserver 192.168.137.111:8080 &
+sudo python3.6  /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.142:8080 &
 sudo /home/pi/Desktop/LoRa/nodo.cpp_exe &
 #sudo /home/pi/cooking/examples/LoRa/nodo.cpp_exe &
 

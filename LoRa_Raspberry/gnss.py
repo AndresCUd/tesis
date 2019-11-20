@@ -27,7 +27,7 @@ infoLora = str(nodo) + ','+ str(bw) + ','+ str(maxCurrent)+ ','+ str(paqueteEnvi
 def line_prepender(nodo, line):  
     with open("/home/pi//Desktop/data/nodo"+ str(nodo)+".txt", "a") as myfile:
         myfile.seek(0)
-        myfile.write(str(line)+'\n')
+        myfile.write('\n'+str(line))
         myfile.close()
 
 while True:
