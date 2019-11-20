@@ -15,8 +15,8 @@ path = "/home/pi/Desktop/data/"
  
 
 def download(request,filename):
-    file = os.path.join(path,filename)
-    response = HttpResponse(open(file).read())#content_type='application/force-download') 
+    f = os.path.join(path,filename)
+    response = HttpResponse(open(f.read())#content_type='application/force-download') 
     response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(filename)
   #  response['X-Sendfile'] = smart_str(path) 
     # It's usually a good idea to set the 'Content-Length' header too. 
@@ -56,57 +56,55 @@ def actualizar(request):
     dirs = os.listdir( path )
     for file in dirs:
         file0 = os.path.join(path,file)
-        data = open(file0, "w").readlines()
-        print(data)
-        if (len(data[0])>10):
-            lastData = data[0]
-            data0 = lastData.split("$") 
-            data = data0[0].split(",") 
-            if len(data0[1]) > 10:
-                msg = pynmea2.parse(data0[1])
-            else:
-                msg = pynmea2.parse("GNGGA,0,0,N,0,W,0,0,0,0,M,0")
-            #9,1,2,3,4,5,6,0$GNGGA,185951.00,0438.09587,N,07404.10108,W,1,12,0.65,2601.3,M,4.7
-            try:
-                n = nodos.objects.get(NumeroNodo = int(data[0])) 
-                n.EstadoLora = True if int(data[1]) != 0 else False
-                n.AnchoBanda = int(data[1])
-                n.Corriente = int(data[2])
-                n.PaquetesEnviados = int(data[3])
-                n.PaquetesRecibidos = int(data[4])
-                n.TiempoEnvio = float(data[5])
-                n.FuerzaSenal = int(data[6])
-                n.CargaUtil = int(data[7])
-                #GNSS
-                n.NumeroSatelites = msg.num_sats
-                n.dilucion =msg.horizontal_dil
-                n.latitud = msg.latitude
-                n.longitud = msg.longitude
-                n.altitud = msg.altitude
-                n.fixQuality= msg.gps_qual
-                n.estadoGnss = True if int(msg.gps_qual) != 0 else False
-                n.save()
-            except nodos.DoesNotExist:
-                n = nodos(
-                        NumeroNodo = int(data[0]),
-                        EstadoLora = True if int(data[1]) != 0 else False,
-                        AnchoBanda = int(data[1]),
-                        Corriente =int(data[2]),
-                        PaquetesEnviados = int(data[3]),
-                        PaquetesRecibidos =int(data[4]),
-                        TiempoEnvio = float(data[5]),
-                        FuerzaSenal = int(data[6]),
-                        CargaUtil = int(data[7]),
-                        #GNSS
-                        NumeroSatelites = msg.num_sats,
-                        dilucion =msg.horizontal_dil,
-                        latitud = msg.latitude,
-                        longitud = msg.longitude,
-                        altitud = msg.altitude,
-                        fixQuality= msg.gps_qual,
-                        estadoGnss = True if int(msg.gps_qual) != 0 else False
-                )
-                n.save()
+        data = open(file0, "r").readlines()
+        lastData = data[0]
+        data0 = lastData.split("$") 
+        data = data0[0].split(",") 
+        if len(data0[1]) > 10:
+            msg = pynmea2.parse(data0[1])
+        else:
+            msg = pynmea2.parse("GNGGA,0,0,N,0,W,0,0,0,0,M,0")
+        #9,1,2,3,4,5,6,0$GNGGA,185951.00,0438.09587,N,07404.10108,W,1,12,0.65,2601.3,M,4.7
+        try:
+            n = nodos.objects.get(NumeroNodo = int(data[0])) 
+            n.EstadoLora = True if int(data[1]) != 0 else False
+            n.AnchoBanda = int(data[1])
+            n.Corriente = int(data[2])
+            n.PaquetesEnviados = int(data[3])
+            n.PaquetesRecibidos = int(data[4])
+            n.TiempoEnvio = float(data[5])
+            n.FuerzaSenal = int(data[6])
+            n.CargaUtil = int(data[7])
+            #GNSS
+            n.NumeroSatelites = msg.num_sats
+            n.dilucion =msg.horizontal_dil
+            n.latitud = msg.latitude
+            n.longitud = msg.longitude
+            n.altitud = msg.altitude
+            n.fixQuality= msg.gps_qual
+            n.estadoGnss = True if int(msg.gps_qual) != 0 else False
+            n.save()
+        except nodos.DoesNotExist:
+            n = nodos(
+                    NumeroNodo = int(data[0]),
+                    EstadoLora = True if int(data[1]) != 0 else False,
+                    AnchoBanda = int(data[1]),
+                    Corriente =int(data[2]),
+                    PaquetesEnviados = int(data[3]),
+                    PaquetesRecibidos =int(data[4]),
+                    TiempoEnvio = float(data[5]),
+                    FuerzaSenal = int(data[6]),
+                    CargaUtil = int(data[7]),
+                    #GNSS
+                    NumeroSatelites = msg.num_sats,
+                    dilucion =msg.horizontal_dil,
+                    latitud = msg.latitude,
+                    longitud = msg.longitude,
+                    altitud = msg.altitude,
+                    fixQuality= msg.gps_qual,
+                    estadoGnss = True if int(msg.gps_qual) != 0 else False
+            )
+            n.save()
         
     return  render(request, 'nodos/index.html',{"data":no})
 

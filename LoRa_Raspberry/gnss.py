@@ -23,14 +23,12 @@ data = ''
 # nodo.txt se refiere a la  informacion propia de nodo tomanda desde el sensor
 # Se deja un tiempo para que el GNSS inicie y de informacion util de ubicacion
 i = 0
-
 infoLora = str(nodo) + ','+ str(bw) + ','+ str(maxCurrent)+ ','+ str(paqueteEnviado) + ','+ str(paqueteRecibido) + ','+ str(tiempoEnvio) + ','+ str(RSSI) + ','+ str(payloadlength)
-def line_prepender(nodo, line): 
-    with open('/home/pi//Desktop/data/nodo'+ str(nodo)+'.txt', 'r+') as f:
-        content = f.read()
-        f.seek(0, 0)
-        f.write(str(line) + '\n' + content)
-        f.close()
+def line_prepender(nodo, line):  
+    with open("/home/pi//Desktop/data/nodo"+ str(nodo)+".txt", "a") as myfile:
+        myfile.seek(0)
+        myfile.write(str(line)+'\n')
+        myfile.close()
 
 while True:
     data = port.readline()
