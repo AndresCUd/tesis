@@ -3,6 +3,7 @@ import time, os
 import pynmea2
 import sys
 import os
+from datetime import datetime
 
 nodo=str(sys.argv[1])
 bw=str(sys.argv[2])
@@ -24,21 +25,28 @@ data = ''
 # Se deja un tiempo para que el GNSS inicie y de informacion util de ubicacion
 i = 0
 infoLora = str(nodo) + ','+ str(bw) + ','+ str(maxCurrent)+ ','+ str(paqueteEnviado) + ','+ str(paqueteRecibido) + ','+ str(tiempoEnvio) + ','+ str(RSSI) + ','+ str(payloadlength)
-def line_prepender(nodo, line):  
-    with open("/home/pi//Desktop/data/nodo"+ str(nodo)+".txt", "a") as myfile:
-        myfile.seek(0)
-        myfile.write('\n'+str(line))
-        myfile.close()
 
+fi=open("/home/pi//Desktop/data/nodo"+ str(nodo)+".txt", "r")
+contente =fi.read()
+def line_prepender(nodo, line):  
+    with open("/home/pi//Desktop/data/nodo"+ str(nodo)+".txt", "w") as f:
+        f.seek(0,0)
+        f.write(str(line)+'\n'+contente)
+        f.close()
+now = datetime.now()
 while True:
     data = port.readline()
     if (data.startswith("$GNGGA")):
-        nmea = str(infoLora) + str(data.rstrip('$\r\n')) 
+        nmea = str(infoLora) +'_'+ str(data.rstrip('$\r\n')) 
         msg = pynmea2.parse(data)
         if msg.gps_qual == 1:
             i = 1
             line_prepender(nodo,nmea)
     if i == 1:
+        break
+    now2 = datetime.now()
+    asd = now2 -now
+    if asd.seconds > 60:
         break
  
 """
@@ -68,3 +76,8 @@ python  /home/pi/Desktop/LoRa/gnss.py 9 0 0 0 0 0 0 0
                         msg.longitude) + ',' + str(msg.altitude) + ',' + str(
                             msg.gps_qual) + ',' 
 """
+
+
+
+#4.6349203333333335,-74.06839783333334
+#4.6356665  ,-74.0682755

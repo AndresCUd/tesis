@@ -23,7 +23,7 @@ char coma[] = " ";
 char mgsA[] = "a";
 char mgsB[] = "b";
 char data;
-int numNodo = 9;
+int numNodo = 1;
 // GNSS Comunicacion Serial
 char buff[255];
 
@@ -79,9 +79,9 @@ void esclavo(void){
       paqOrigin = (int)sx1272.packet_received.src;
       paqueteRecibido = paqueteRecibido + 1;
       struct timeval start, stop;
-      e = 2;
+      /*e = 2;
       int error = 0;
-      while (e > 1){
+      while (e > 1){*/
         gettimeofday(&start, NULL);
         e = sx1272.sendPacketTimeoutACK(paqOrigin, buff);
         gettimeofday(&stop, NULL);
@@ -89,10 +89,10 @@ void esclavo(void){
         paqueteEnviado = paqueteEnviado + 1;
         printf("Info regresada %s:\n ", buff);
         error = error + 1;
-        if (error == 2){
+        /*if (error == 2){
           break;
         }
-      }
+      }*/
     }
     else if (my_packet[0] == 98){
       mode = true;
@@ -106,7 +106,7 @@ void esclavo(void){
 void maestro(void){
   e = sx1272.getNodeAddress();
   int k = sx1272._nodeAddress;
-  for (int i = 1; i < 10; i++)  {
+  for (int i = 1; i < 6; i++)  {
     if (i != k)    {
       e = sx1272.sendPacketTimeoutACK(i, mgsA);
       printf("Pregunta al numNodo %d\n", i);
@@ -167,8 +167,6 @@ void createInfo(void){
 }
 
 void datos(){
-    sprintf(info2,"%s%d", "sudo python  //home//pi//Desktop//LoRa//datos1.py " , numNodo);
-    system(info2);
     e = sx1272.getNodeAddress();
     sprintf(infoT, "%s%d%s",  stringNodo,sx1272._nodeAddress,mesEnd);
     FILE *fp;

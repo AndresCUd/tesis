@@ -10,17 +10,14 @@ from .models import nodos
 import os, sys
 import json
 import pynmea2
-path = "/home/pi/Desktop/data/"
-#path = "C:\\Users\\varit\\Desktop\\datos\\"
+#path = "/home/pi/Desktop/data/"
+path="C:/Users/Alvaro/Desktop/datos"
  
 
 def download(request,filename):
     file = os.path.join(path,filename)
     response = HttpResponse(open(file).read())#content_type='application/force-download') 
     response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(filename)
-    #response['X-Sendfile'] = smart_str(path) 
-    # It's usually a good idea to set the 'Content-Length' header too. 
-    # You can also set any other required headers: Cache-Control, etc. 
     return response 
 
 def ver(request,filename):
@@ -58,12 +55,13 @@ def actualizar(request):
         file0 = os.path.join(path,file)
         data = open(file0, "r").readlines()
         lastData = data[len(data)-1]
-        data0 = lastData.split("$") 
-        data = data0[0].split(",") 
+        data0 = lastData.split("_") 
+        data = data0[0].split(",")
+        print(data0)
         if len(data0[1]) > 10:
-            msg = pynmea2.parse(data0[1])
+            msg = pynmea2.parse("$GNGGA,"+data0[1].rstrip('\n'))
         else:
-            msg = pynmea2.parse("GNGGA,0,0,N,0,W,0,0,0,0,M,0")
+            msg = pynmea2.parse("$GNGGA,0,0,N,0,W,0,0,0,0,M,0")
         #9,1,2,3,4,5,6,0$GNGGA,185951.00,0438.09587,N,07404.10108,W,1,12,0.65,2601.3,M,4.7
         try:
             n = nodos.objects.get(NumeroNodo = int(data[0])) 
