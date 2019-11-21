@@ -5,7 +5,7 @@ nodo=str(sys.argv[1])
 path = "//home//pi//Desktop//data"
 filename = "nodo"+nodo+".txt"
 a = os.path.exists(path+filename)
-hola = nodo + ",0,0,0,0,0,0,0$ \n"
+hola = nodo + ",0,0,0,0,0,0,0_$ \n"
 #9,1,2,3,4,5,6,0$
 if not a:
     f = os.path.join(path,filename)

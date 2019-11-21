@@ -10,8 +10,8 @@ from .models import nodos
 import os, sys
 import json
 import pynmea2
-#path = "/home/pi/Desktop/data/"
-path="C:/Users/Alvaro/Desktop/datos"
+path = "/home/pi/Desktop/data/"
+#path="C:/Users/Alvaro/Desktop/datos"
  
 
 def download(request,filename):
@@ -54,12 +54,15 @@ def actualizar(request):
     for file in dirs:
         file0 = os.path.join(path,file)
         data = open(file0, "r").readlines()
-        lastData = data[len(data)-1]
+        lastData = data[0]
         data0 = lastData.split("_") 
         data = data0[0].split(",")
-        print(data0)
-        if len(data0[1]) > 10:
-            msg = pynmea2.parse("$GNGGA,"+data0[1].rstrip('\n'))
+        if len(data0[1]) > 10:  
+            if "$GNGGA" in data0[1]:
+                msg = pynmea2.parse(data0[1].rstrip('\n'))
+            else:
+                print("alskd")
+                msg = pynmea2.parse("$GNGGA"+data0[1].rstrip('\n'))
         else:
             msg = pynmea2.parse("$GNGGA,0,0,N,0,W,0,0,0,0,M,0")
         #9,1,2,3,4,5,6,0$GNGGA,185951.00,0438.09587,N,07404.10108,W,1,12,0.65,2601.3,M,4.7
@@ -115,7 +118,7 @@ def index(request):
     n =  nodos.objects.all()
     return render(request, 'nodos/index.html',{"data":n})
 
-#sudo python3 /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.142:8080
+#sudo python3 /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.111:8080
     
 def loginUser(request):
     logout(request)
