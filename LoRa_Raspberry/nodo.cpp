@@ -120,10 +120,10 @@ void maestro(void){
               my_packet[j] = (char)sx1272.packet_received.data[j];}
           }
         }
-      } 
       sprintf(info1, "%s%d%s%s",  toSave,i, coma ,my_packet);
       system(info1);
       printf("Info regresada %s:\n ", info1);
+      } 
     }
   }
 
@@ -213,5 +213,3 @@ int main(){
   }
   return (0);
 }
-
-/// cd atos/cooking/examples/LoRa 

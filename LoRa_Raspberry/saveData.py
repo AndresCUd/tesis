@@ -4,7 +4,10 @@ import sys
 import os
 
 nodo=str(sys.argv[1])
-data=str(sys.argv[2])
+try:
+    data=str(sys.argv[2])
+except:
+    data = ""
 fi = open('/home/pi//Desktop/data/nodo'+ nodo+'.txt','r')
 content = fi.read()
 def line_prepender(nodo, line):  
@@ -13,7 +16,7 @@ def line_prepender(nodo, line):
         f.write(str(line)+'\n'+content)
         f.close()  
 content1 = fi.readline()
-if content1 > 30:
+if data > 30:
     line_prepender(nodo,data)
 else:
     datos = nodo +",0,0,0,0,0,0,0_$ \n"

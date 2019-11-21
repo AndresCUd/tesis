@@ -31,7 +31,7 @@ sudo python  //home//pi//Desktop//LoRa//datos1.py 1
 sudo python  //home//pi//Desktop//LoRa//datos1.py 2
 sudo python  //home//pi//Desktop//LoRa//datos1.py 3
 sudo python  //home//pi//Desktop//LoRa//datos1.py 4
-
+sudo python  //home//pi//Desktop//LoRa//datos1.py 5
 
 cd  /home/pi/tesis/LoRa_Django
 sudo pip3.6 install -r requirements.txt
