@@ -13,18 +13,11 @@ paqueteRecibido=str(sys.argv[5])
 tiempoEnvio =str(sys.argv[6])
 RSSI=str(sys.argv[7])
 payloadlength=str(sys.argv[8])
-
-port = serial.Serial(port="/dev/ttyACM0",
-                     baudrate=9600,
-                     timeout=0.1,
-                     bytesize=serial.EIGHTBITS)
-port.close()
-port.open()
+i = 0
+infoLora = str(nodo) + ','+ str(bw) + ','+ str(maxCurrent)+ ','+ str(paqueteEnviado) + ','+ str(paqueteRecibido) + ','+ str(tiempoEnvio) + ','+ str(RSSI) + ','+ str(payloadlength)
 data = ''
 # nodo.txt se refiere a la  informacion propia de nodo tomanda desde el sensor
 # Se deja un tiempo para que el GNSS inicie y de informacion util de ubicacion
-i = 0
-infoLora = str(nodo) + ','+ str(bw) + ','+ str(maxCurrent)+ ','+ str(paqueteEnviado) + ','+ str(paqueteRecibido) + ','+ str(tiempoEnvio) + ','+ str(RSSI) + ','+ str(payloadlength)
 
 fi=open("/home/pi//Desktop/data/nodo"+ str(nodo)+".txt", "r")
 contente =fi.read()
@@ -34,20 +27,33 @@ def line_prepender(nodo, line):
         f.write(str(line)+'\n'+contente)
         f.close()
 now = datetime.now()
-while True:
-    data = port.readline()
-    if (data.startswith("$GNGGA")):
-        nmea = str(infoLora) +'_'+ str(data.rstrip('$\r\n')) 
-        msg = pynmea2.parse(data)
-        if msg.gps_qual == 1:
-            i = 1
-            line_prepender(nodo,nmea)
-    if i == 1:
-        break
-    now2 = datetime.now()
-    asd = now2 -now
-    if asd.seconds > 60:
-        break
+
+try:
+    port = serial.Serial(port="/dev/ttyACM0",
+                        baudrate=9600,
+                        timeout=0.1,
+                        bytesize=serial.EIGHTBITS)
+    port.close()
+    port.open()
+    while True:
+        data = port.readline()
+        if (data.startswith("$GNGGA")):
+            nmea = str(infoLora) +'_'+ str(data.rstrip('$\r\n')) 
+            msg = pynmea2.parse(data)
+            if msg.gps_qual == 1:
+                i = 1
+                line_prepender(nodo,nmea)
+        if i == 1:
+            break
+        now2 = datetime.now()
+        asd = now2 -now
+        if asd.seconds > 60:
+            break
+except :
+    nmea =nodo+",0,0,0,0,0,0,0$0,0,0,0,0,0,0,0,000,0,0,0,000,0 \n"
+    line_prepender(nodo,nmea)
+
+
  
 """
     while (port.in_waiting > 0):
