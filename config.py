@@ -32,9 +32,12 @@ sudo python  //home//pi//Desktop//LoRa//datos1.py 2
 sudo python  //home//pi//Desktop//LoRa//datos1.py 3
 sudo python  //home//pi//Desktop//LoRa//datos1.py 4
 sudo python  //home//pi//Desktop//LoRa//datos1.py 5
+cd /home/pi/Desktop/data
+nano modo.txt
+#"0"
 
 cd  /home/pi/tesis/LoRa_Django
-sudo pip3.6 install -r requirements.txt
+#sudo pip3.6 install -r requirements.txt
 cd /home/pi/tesis
 unzip raspberrypi.zip && cd cooking/arduPi && chmod +x install_arduPi && ./install_arduPi && rm install_arduPi && cd ../..
 unzip -u arduPi-api_LoRa_v1_4.zip && cd cooking/examples/LoRa && chmod +x cook.sh && cd ../../..
@@ -46,7 +49,7 @@ mv  nodo.cpp_exe   /home/pi/Desktop/LoRa/
 sudo nano /etc/rc.local
 # Add to end to the file
 # /home/pi/datos/LoRa_Django/nodos/views.py
-sudo python3.6  /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.111:8080 &
+sudo python3.6  /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.142:8080 &
 sudo /home/pi/Desktop/LoRa/nodo.cpp_exe &
 #sudo /home/pi/cooking/examples/LoRa/nodo.cpp_exe &
 
@@ -119,3 +122,7 @@ sudo reboot
 # 0.73  =>(5) dilución horizontal de la posición
 # 2609.1,M =>(6) Indican la altitud en metros sobre el nivel del mar esto es sumamente importante en sistemas de telemetría aéreos o para analizar los datos de vuelo de por ejemplo un Dron
 # 4.7,M, =>(7) indican una altitud relativa de la ubicación útil en aplicaciones de aproximación en la tierra mediante una elipsoide
+
+sudo rm -r /home/pi/tesis/
+sudo rm -r /home/pi/Desktop/data/
+sudo rm -r /home/pi/Desktop/LoRa/

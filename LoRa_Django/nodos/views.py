@@ -29,84 +29,83 @@ def ver(request,filename):
 
 
 def maestro(request):
-    path_m = path
-    filename = "modo.txt"
-    file = os.path.join(path_m,filename)
-    f = open(file,'w')
-    f.write("1,")
+    fil = os.path.join(path,"modo.txt")
+    f = open(fil,'w')
+    f.write("1")
     f.close()
-    dirs = os.listdir( path )
-    return  render(request, 'nodos/index.html',{"data":dirs})
+    no =  nodos.objects.all()
+    return  render(request, 'nodos/index.html',{"data":no})
 
 def esclavo(request):
     path_e = path 
     filename = "modo.txt"
     file = os.path.join(path_e,filename)
     f = open(file,'w')
-    f.write("0,")
+    f.write("0")
     f.close()
-    dirs = os.listdir( path )
-    return  render(request, 'nodos/index.html',{"data":dirs})
+    no =  nodos.objects.all()
+    return  render(request, 'nodos/index.html',{"data":no})
 
 def actualizar(request):
     no =  nodos.objects.all()
     dirs = os.listdir( path )
     for file in dirs:
-        file0 = os.path.join(path,file)
-        data = open(file0, "r").readlines()
-        lastData = data[0]
-        data0 = lastData.split("_") 
-        data = data0[0].split(",")
-        if len(data0[1]) > 10:  
-            if "$GNGGA" in data0[1]:
-                msg = pynmea2.parse(data0[1].rstrip('\n'))
+        if "nodo" in str(file):
+            file0 = os.path.join(path,file)
+            data = open(file0, "r").readlines()
+            lastData = data[0]
+            print(lastData)
+            data0 = lastData.split("_") 
+            data = data0[0].split(",")
+            if len(data0[1]) > 10:  
+                if "$GNGGA" in data0[1]:
+                    msg = pynmea2.parse(data0[1].rstrip('\n'))
+                else:
+                    print("alskd")
+                    msg = pynmea2.parse("$GNGGA"+data0[1].rstrip('\n'))
             else:
-                print("alskd")
-                msg = pynmea2.parse("$GNGGA"+data0[1].rstrip('\n'))
-        else:
-            msg = pynmea2.parse("$GNGGA,0,0,N,0,W,0,0,0,0,M,0")
-        #9,1,2,3,4,5,6,0$GNGGA,185951.00,0438.09587,N,07404.10108,W,1,12,0.65,2601.3,M,4.7
-        try:
-            n = nodos.objects.get(NumeroNodo = int(data[0])) 
-            n.EstadoLora = True if int(data[1]) != 0 else False
-            n.AnchoBanda = int(data[1])
-            n.Corriente = int(data[2])
-            n.PaquetesEnviados = int(data[3])
-            n.PaquetesRecibidos = int(data[4])
-            n.TiempoEnvio = float(data[5])
-            n.FuerzaSenal = int(data[6])
-            n.CargaUtil = int(data[7])
-            #GNSS
-            n.NumeroSatelites = msg.num_sats
-            n.dilucion =msg.horizontal_dil
-            n.latitud = msg.latitude
-            n.longitud = msg.longitude
-            n.altitud = msg.altitude
-            n.fixQuality= msg.gps_qual
-            n.estadoGnss = True if int(msg.gps_qual) != 0 else False
-            n.save()
-        except nodos.DoesNotExist:
-            n = nodos(
-                    NumeroNodo = int(data[0]),
-                    EstadoLora = True if int(data[1]) != 0 else False,
-                    AnchoBanda = int(data[1]),
-                    Corriente =int(data[2]),
-                    PaquetesEnviados = int(data[3]),
-                    PaquetesRecibidos =int(data[4]),
-                    TiempoEnvio = float(data[5]),
-                    FuerzaSenal = int(data[6]),
-                    CargaUtil = int(data[7]),
-                    #GNSS
-                    NumeroSatelites = msg.num_sats,
-                    dilucion =msg.horizontal_dil,
-                    latitud = msg.latitude,
-                    longitud = msg.longitude,
-                    altitud = msg.altitude,
-                    fixQuality= msg.gps_qual,
-                    estadoGnss = True if int(msg.gps_qual) != 0 else False
-            )
-            n.save()
-        
+                msg = pynmea2.parse("$GNGGA,0,0,N,0,W,0,0,0,0,M,0")
+            #9,1,2,3,4,5,6,0$GNGGA,185951.00,0438.09587,N,07404.10108,W,1,12,0.65,2601.3,M,4.7
+            try:
+                n = nodos.objects.get(NumeroNodo = int(data[0])) 
+                n.EstadoLora = True if int(data[6]) != 0 else False
+                n.AnchoBanda = int(data[1])
+                n.Corriente = int(data[2])
+                n.PaquetesEnviados = int(data[3])
+                n.PaquetesRecibidos = int(data[4])
+                n.TiempoEnvio = float(data[5])
+                n.FuerzaSenal = int(data[6])
+                n.CargaUtil = int(data[7])
+                #GNSS
+                n.NumeroSatelites = msg.num_sats
+                n.dilucion =msg.horizontal_dil
+                n.latitud = msg.latitude
+                n.longitud = msg.longitude
+                n.altitud = msg.altitude
+                n.fixQuality= msg.gps_qual
+                n.estadoGnss = True if int(msg.gps_qual) != 0 else False
+                n.save()
+            except nodos.DoesNotExist:
+                n = nodos(
+                        NumeroNodo = int(data[0]),
+                        EstadoLora = True if int(data[6]) != 0 else False,
+                        AnchoBanda = int(data[1]),
+                        Corriente =int(data[2]),
+                        PaquetesEnviados = int(data[3]),
+                        PaquetesRecibidos =int(data[4]),
+                        TiempoEnvio = float(data[5]),
+                        FuerzaSenal = int(data[6]),
+                        CargaUtil = int(data[7]),
+                        #GNSS
+                        NumeroSatelites = msg.num_sats,
+                        dilucion =msg.horizontal_dil,
+                        latitud = msg.latitude,
+                        longitud = msg.longitude,
+                        altitud = msg.altitude,
+                        fixQuality= msg.gps_qual,
+                        estadoGnss = True if int(msg.gps_qual) != 0 else False
+                )
+                n.save()
     return  render(request, 'nodos/index.html',{"data":no})
 
 def detallesNodo(request,filename):

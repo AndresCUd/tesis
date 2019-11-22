@@ -12,6 +12,7 @@ char my_packet[300];
 char mess[] = "echo '";
 char mesEnd[] = ".txt";
 bool mode = false;
+bool mode1 =true;
 double secs = 0;
 time_t rawtime;
 char info1[300];
@@ -23,6 +24,7 @@ char coma[] = " ";
 char mgsA[] = "a";
 char mgsB[] = "b";
 char data;
+char aux;
 int numNodo = 1;
 // GNSS Comunicacion Serial
 char buff[255];
@@ -70,7 +72,7 @@ void setup(){
 }
 
 void esclavo(void){
-  e = sx1272.receivePacketTimeoutACK(10000);
+  e = sx1272.receivePacketTimeoutACK(15000);
   if (e == 0) {
     for (unsigned int i = 0; i < sx1272.packet_received.length; i++)    {
       my_packet[i] = (char)sx1272.packet_received.data[i];
@@ -83,25 +85,28 @@ void esclavo(void){
       e = 2;
       int error = 0;
       while (e > 1){
-        gettimeofday(&start, NULL);
-        e = sx1272.sendPacketTimeoutACK(paqOrigin, buff);
-        gettimeofday(&stop, NULL);
-        secs = (double)(stop.tv_usec - start.tv_usec) / 1000000 + (double)(stop.tv_sec - start.tv_sec);
-        error = error + 1;
-        if (error == 2){
-          break;
+        if (mode1){
+          gettimeofday(&start, NULL);
+          e = sx1272.sendPacketTimeoutACK(paqOrigin, buff);
+          gettimeofday(&stop, NULL);
+        }else{
+          gettimeofday(&start, NULL);
+          e = sx1272.sendPacketTimeoutACK(paqOrigin, mgsB);
+          gettimeofday(&stop, NULL);
+          mode = true;
         }
+          secs = (double)(stop.tv_usec - start.tv_usec) / 1000000 + (double)(stop.tv_sec - start.tv_sec);
+          error = error + 1;
+          if (error == 2){
+            break;
+          }
       }
       printf("Info regresada %s:\n ", buff);
       paqueteEnviado = paqueteEnviado + 1;
     }
-    else if (my_packet[0] == 98){
-      mode = true;
-    }
   } else {
     printf("No Se pidieron Datos \n");
   }
-  delay(2000);
 }
 
 void maestro(void){
@@ -118,33 +123,18 @@ void maestro(void){
           if (e == 0){
             for (unsigned int j = 0; j < sx1272.packet_received.length; j++){
               my_packet[j] = (char)sx1272.packet_received.data[j];}
-          }
-        }
-      sprintf(info1, "%s%d%s%s",  toSave,i, coma ,my_packet);
-      system(info1);
-      printf("Info regresada %s:\n ", info1);
-      } 
-    }
-  }
-
- for (int i = 1; i < 6; i++)  {
-    if (i != k)    {
-      e = sx1272.sendPacketTimeoutACK(i, mgsB);
-      printf("Pregunta al Nodo %d\n", i);
-      if (e == 0) {
-        e = 3;
-        while (e > 2) {
-          e = sx1272.receivePacketTimeoutACK(10000);
-          if (e == 0){
-            mode =false;
+          }     
+          if (strcmp (mgsB, my_packet) == 0){
+            mode = false;
+          }else{
+            sprintf(info1, "%s%d%s%s",  toSave,i, coma ,my_packet);
+            system(info1);
+            printf("Info regresada %s:\n ", info1);
           }
         }
       } 
     }
   }
-
-
-
 }
 
 int toString(char a[]) {
@@ -183,6 +173,15 @@ void createInfo(void){
     fgets(buff, 255, (FILE*)fp);
     fclose(fp);
   }
+    FILE *fp;
+    fp = fopen("//home//pi//Desktop//data//modo.txt", "r");
+    fgets(aux,1, (FILE*)fp);
+    fclose(fp);
+    if (strcmp ("0", aux) == 0){
+      mode1 = true;
+    }else{
+      mode1 = false;
+    }
 }
 
 void datos(){
