@@ -27,6 +27,7 @@ cd  /home/pi/tesis/LoRa_Raspberry
 mv datos1.py /home/pi/Desktop/LoRa/
 mv gnss.py  /home/pi/Desktop/LoRa/
 mv saveData.py  /home/pi/Desktop/LoRa/
+mv modo.py  /home/pi/Desktop/LoRa/
 sudo python  //home//pi//Desktop//LoRa//datos1.py 1
 sudo python  //home//pi//Desktop//LoRa//datos1.py 2
 sudo python  //home//pi//Desktop//LoRa//datos1.py 3
@@ -34,7 +35,7 @@ sudo python  //home//pi//Desktop//LoRa//datos1.py 4
 sudo python  //home//pi//Desktop//LoRa//datos1.py 5
 cd /home/pi/Desktop/data
 nano modo.txt
-#"0"
+0
 
 cd  /home/pi/tesis/LoRa_Django
 #sudo pip3.6 install -r requirements.txt

@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login as dj_login
 from django.utils.encoding import  smart_str
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from .models import nodos
+from .models import nodos,maestroES
 import os, sys
 import json
 import pynmea2
@@ -30,21 +30,33 @@ def ver(request,filename):
 
 def maestro(request):
     fil = os.path.join(path,"modo.txt")
-    f = open(fil,'w')
-    f.write("1")
-    f.close()
-    no =  nodos.objects.all()
-    return  render(request, 'nodos/index.html',{"data":no})
+    f1 = open(fil,'w')
+    f1.write("1")
+    f1.close()
+    try:
+        n = maestroES.objects.get(index = 0)
+    except maestroES.DoesNotExist:
+        n = maestroES(index = 0,maestro = True)
+    n.save()
+    n =  nodos.objects.all()
+    m = maestroES.objects.all()
+    return render(request, 'nodos/index.html',{"data":n,"maestro":m})
+
 
 def esclavo(request):
-    path_e = path 
-    filename = "modo.txt"
-    file = os.path.join(path_e,filename)
-    f = open(file,'w')
-    f.write("0")
-    f.close()
-    no =  nodos.objects.all()
-    return  render(request, 'nodos/index.html',{"data":no})
+    fil = os.path.join(path,"modo.txt")
+    f1 = open(fil,'w')
+    f1.write("0")
+    f1.close()
+    try:
+        n = maestroES.objects.get(index = 0)
+    except maestroES.DoesNotExist:
+        n = maestroES(index = 0,maestro = False)
+    n.save()
+    n =  nodos.objects.all()
+    m = maestroES.objects.all()
+    return render(request, 'nodos/index.html',{"data":n,"maestro":m})
+
 
 def actualizar(request):
     no =  nodos.objects.all()
@@ -54,7 +66,6 @@ def actualizar(request):
             file0 = os.path.join(path,file)
             data = open(file0, "r").readlines()
             lastData = data[0]
-            print(lastData)
             data0 = lastData.split("_") 
             data = data0[0].split(",")
             if len(data0[1]) > 10:  
@@ -115,7 +126,8 @@ def detallesNodo(request,filename):
 
 def index(request):
     n =  nodos.objects.all()
-    return render(request, 'nodos/index.html',{"data":n})
+    m = maestroES.objects.all()
+    return render(request, 'nodos/index.html',{"data":n,"maestro":m})
 
 #sudo python3 /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.111:8080
     

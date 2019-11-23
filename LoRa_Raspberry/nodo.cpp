@@ -11,8 +11,8 @@ int valor = 0;
 char my_packet[300];
 char mess[] = "echo '";
 char mesEnd[] = ".txt";
-bool mode = false;
-bool mode1 =true;
+bool mode = true;
+bool mode1 = true;
 double secs = 0;
 time_t rawtime;
 char info1[300];
@@ -23,14 +23,11 @@ char toSave[] = "sudo python  //home//pi//Desktop//LoRa//saveData.py ";
 char coma[] = " ";
 char mgsA[] = "a";
 char mgsB[] = "b";
-char data;
-char aux;
-int numNodo = 1;
+char aux[1];
+int numNodo = 5;
 // GNSS Comunicacion Serial
 char buff[255];
-
 char stringNodo[]  ="//home//pi//Desktop//data//nodo";
-
 
 void setup(){
   Serial.begin(9600);
@@ -39,7 +36,7 @@ void setup(){
   printf("Setting power ON: state %d\n", e);
 
   // Set transmission mode
-  e |= sx1272.setMode(1);
+  e |= sx1272.setMode(4);
   printf("Setting Mode: state %d\n", e);
 
   // Set header
@@ -72,40 +69,30 @@ void setup(){
 }
 
 void esclavo(void){
-  e = sx1272.receivePacketTimeoutACK(15000);
+  e = sx1272.receivePacketTimeoutACK(10000);
   if (e == 0) {
     for (unsigned int i = 0; i < sx1272.packet_received.length; i++)    {
       my_packet[i] = (char)sx1272.packet_received.data[i];
     }
     paqueteRecibido = paqueteRecibido + 1;
     if (my_packet[0] == 97) {
-      delay(50);
       paqOrigin = (int)sx1272.packet_received.src;
+      paqueteRecibido = paqueteRecibido + 1;
       struct timeval start, stop;
-      e = 2;
-      int error = 0;
-      while (e > 1){
-        if (mode1){
-          gettimeofday(&start, NULL);
-          e = sx1272.sendPacketTimeoutACK(paqOrigin, buff);
-          gettimeofday(&stop, NULL);
-        }else{
-          gettimeofday(&start, NULL);
-          e = sx1272.sendPacketTimeoutACK(paqOrigin, mgsB);
-          gettimeofday(&stop, NULL);
-          mode = true;
+      gettimeofday(&start, NULL);
+      if (modo1){
+      e = sx1272.sendPacketTimeoutACK(paqOrigin, buff);
+      }else{
+        e = sx1272.sendPacketTimeoutACK(paqOrigin, mgsB);
+        if(e == 0){
+          modo = true;
         }
-          secs = (double)(stop.tv_usec - start.tv_usec) / 1000000 + (double)(stop.tv_sec - start.tv_sec);
-          error = error + 1;
-          if (error == 2){
-            break;
-          }
       }
-      printf("Info regresada %s:\n ", buff);
+      gettimeofday(&stop, NULL);
+      secs = (double)(stop.tv_usec - start.tv_usec) / 1000000 + (double)(stop.tv_sec - start.tv_sec);
       paqueteEnviado = paqueteEnviado + 1;
+      printf("Info regresada %s:\n ", buff);
     }
-  } else {
-    printf("No Se pidieron Datos \n");
   }
 }
 
@@ -117,21 +104,19 @@ void maestro(void){
       e = sx1272.sendPacketTimeoutACK(i, mgsA);
       printf("Pregunta al Nodo %d\n", i);
       if (e == 0) {
-        e = 3;
-        while (e > 2) {
-          e = sx1272.receivePacketTimeoutACK(10000);
-          if (e == 0){
-            for (unsigned int j = 0; j < sx1272.packet_received.length; j++){
-              my_packet[j] = (char)sx1272.packet_received.data[j];}
-          }     
-          if (strcmp (mgsB, my_packet) == 0){
-            mode = false;
-          }else{
-            sprintf(info1, "%s%d%s%s",  toSave,i, coma ,my_packet);
-            system(info1);
-            printf("Info regresada %s:\n ", info1);
-          }
-        }
+        printf("Enviada informacion a nodo %i\n", i);
+        e = sx1272.receivePacketTimeoutACK(10000);
+        if (e == 0){
+          for (unsigned int j = 0; j < sx1272.packet_received.length; j++){
+            my_packet[j] = (char)sx1272.packet_received.data[j];}
+            printf("Info regresada %s\n", my_packet);
+            if (strcmp (mgsB, my_packet) == 0){
+              mode = false;
+            }else{
+              sprintf(info1, "%s%d%s%s",  toSave,i, coma ,my_packet);
+              system(info1);
+            }
+        }     
       } 
     }
   }
@@ -173,15 +158,14 @@ void createInfo(void){
     fgets(buff, 255, (FILE*)fp);
     fclose(fp);
   }
-    FILE *fp;
-    fp = fopen("//home//pi//Desktop//data//modo.txt", "r");
-    fgets(aux,1, (FILE*)fp);
-    fclose(fp);
-    if (strcmp ("0", aux) == 0){
-      mode1 = true;
-    }else{
-      mode1 = false;
-    }
+  int d =system("sudo python  //home//pi//Desktop//LoRa//modo.py");
+  if (d == 0){
+    mode1=true;
+    printf("True \n");
+  }else{
+    mode1=false;
+    printf("False \n");
+  }
 }
 
 void datos(){
@@ -212,3 +196,18 @@ int main(){
   }
   return (0);
 }
+
+
+
+
+
+
+
+/*      if(mode1){
+        e = sx1272.sendPacketTimeoutACK(paqOrigin, buff);
+      }else{
+        e = sx1272.sendPacketTimeoutACK(paqOrigin, mgsB);
+        if (e == 0){
+          mode=true;
+        }
+      }*/

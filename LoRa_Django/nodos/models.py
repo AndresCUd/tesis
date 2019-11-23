@@ -6,6 +6,9 @@ class lista(models.Model):
     tamano = models.IntegerField(default=0)
     nombre =models.TextField(max_length=200,blank=True)
 
+class maestroES(models.Model):
+    index = models.IntegerField(default=0)
+    maestro = models.BooleanField(default=False)
 
 class nodos(models.Model):
    #Lora
