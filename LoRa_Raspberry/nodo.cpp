@@ -80,12 +80,12 @@ void esclavo(void){
       paqueteRecibido = paqueteRecibido + 1;
       struct timeval start, stop;
       gettimeofday(&start, NULL);
-      if (modo1){
+      if (mode1){
       e = sx1272.sendPacketTimeoutACK(paqOrigin, buff);
       }else{
         e = sx1272.sendPacketTimeoutACK(paqOrigin, mgsB);
         if(e == 0){
-          modo = true;
+          mode = true;
         }
       }
       gettimeofday(&stop, NULL);
@@ -161,10 +161,8 @@ void createInfo(void){
   int d =system("sudo python  //home//pi//Desktop//LoRa//modo.py");
   if (d == 0){
     mode1=true;
-    printf("True \n");
   }else{
     mode1=false;
-    printf("False \n");
   }
 }
 
@@ -196,10 +194,6 @@ int main(){
   }
   return (0);
 }
-
-
-
-
 
 
 

@@ -61,6 +61,11 @@ def esclavo(request):
 def actualizar(request):
     no =  nodos.objects.all()
     dirs = os.listdir( path )
+    try:
+        m = maestroES.objects.get(index = 0)
+    except maestroES.DoesNotExist:
+        m = maestroES(index = 0,maestro = False)
+        m.save()
     for file in dirs:
         if "nodo" in str(file):
             file0 = os.path.join(path,file)

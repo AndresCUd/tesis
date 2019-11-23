@@ -36,7 +36,6 @@ sudo python  //home//pi//Desktop//LoRa//datos1.py 5
 cd /home/pi/Desktop/data
 nano modo.txt
 0
-
 cd  /home/pi/tesis/LoRa_Django
 #sudo pip3.6 install -r requirements.txt
 cd /home/pi/tesis
@@ -50,7 +49,7 @@ mv  nodo.cpp_exe   /home/pi/Desktop/LoRa/
 sudo nano /etc/rc.local
 # Add to end to the file
 # /home/pi/datos/LoRa_Django/nodos/views.py
-sudo python3.6  /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.142:8080 &
+sudo python3.6  /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.111:8080 &
 sudo /home/pi/Desktop/LoRa/nodo.cpp_exe &
 #sudo /home/pi/cooking/examples/LoRa/nodo.cpp_exe &
 
