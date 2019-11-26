@@ -18,7 +18,6 @@ infoLora = str(nodo) + ','+ str(bw) + ','+ str(maxCurrent)+ ','+ str(paqueteEnvi
 data = ''
 # nodo.txt se refiere a la  informacion propia de nodo tomanda desde el sensor
 # Se deja un tiempo para que el GNSS inicie y de informacion util de ubicacion
-
 fi=open("/home/pi//Desktop/data/nodo"+ str(nodo)+".txt", "r")
 contente =fi.read()
 def line_prepender(nodo, line):  
@@ -38,6 +37,7 @@ try:
     while True:
         data = port.readline()
         if (data.startswith("$GNGGA")):
+            print(data)
             nmea = str(infoLora) +'_'+ str(data.rstrip('$\r\n')) +'_'
             msg = pynmea2.parse(data)
             if msg.gps_qual == 1:
@@ -50,8 +50,9 @@ try:
         if asd.seconds > 60:
             break
 except :
-    nmea =nodo+",0,0,0,0,0,0,0$0,0,0,0,0,0,0,0,000,0,0,0,000,0 \n"
+    nmea =nodo+",0,0,0,0,0,0,0_$"
     line_prepender(nodo,nmea)
+    print("Buenas")
 
 
  

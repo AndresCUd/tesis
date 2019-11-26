@@ -21,11 +21,11 @@
 </div>
 <div class="text-center">
 <a type="submit" class="btn btn-primary btn-block"  href="{% url 'nodos:actualizar' %}">Actualizar</a>
-{% for file in maestro %}
+{% for file in data2 %}
     {% if file.maestro %}
-    <a type="submit" class="btn btn-secondary btn-block"  href="{% url 'nodos:esclavo' %}">Esclavo </a>
+    <a type="submit" class="btn btn-secondary btn-block"  href="{% url 'nodos:maestro' %}">Esclavo </a>
     {% else %}
-    <a type="submit" class="btn btn-secondary btn-block"  href="{% url 'nodos:maestro' %}">Maestro </a>
+    <a type="submit" class="btn btn-secondary btn-block" >Maestro </a>
     {% endif %}
 {% endfor %}
 

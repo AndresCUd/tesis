@@ -1,3 +1,6 @@
+
+#Get raspbian lite
+https://www.raspberrypi.org/downloads/raspbian/
 ## Instaler Python
 sudo apt-get update
 sudo apt-get install build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev -y
@@ -16,8 +19,9 @@ sudo apt-get --purge remove libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev -y
 sudo apt-get autoremove -y
 sudo apt-get clean -y
 ## Install django
-alias python='python3.6'
 sudo pip install Django==2.2.4
+alias python='python3'
+sudo apt-get install git
 ## Instaler ardupi
 git clone https://github.com/AndresCUd/tesis.git
 cd /home/pi/Desktop/
@@ -33,11 +37,11 @@ sudo python  //home//pi//Desktop//LoRa//datos1.py 2
 sudo python  //home//pi//Desktop//LoRa//datos1.py 3
 sudo python  //home//pi//Desktop//LoRa//datos1.py 4
 sudo python  //home//pi//Desktop//LoRa//datos1.py 5
-cd /home/pi/Desktop/data
-nano modo.txt
+nano  //home//pi//Desktop//LoRa//modo.txt
 0
 cd  /home/pi/tesis/LoRa_Django
-#sudo pip3.6 install -r requirements.txt
+sudo pip3 install -r requirements.txt
+sudo pip install pynmea2
 cd /home/pi/tesis
 unzip raspberrypi.zip && cd cooking/arduPi && chmod +x install_arduPi && ./install_arduPi && rm install_arduPi && cd ../..
 unzip -u arduPi-api_LoRa_v1_4.zip && cd cooking/examples/LoRa && chmod +x cook.sh && cd ../../..
@@ -49,44 +53,51 @@ mv  nodo.cpp_exe   /home/pi/Desktop/LoRa/
 sudo nano /etc/rc.local
 # Add to end to the file
 # /home/pi/datos/LoRa_Django/nodos/views.py
-sudo python3.6  /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.111:8080 &
+sudo python3  /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.164:8080 &
 sudo /home/pi/Desktop/LoRa/nodo.cpp_exe &
+#
+# sudo  rm -r /home/pi/Desktop/LoRa/nodo.cpp_exe 
 #sudo /home/pi/cooking/examples/LoRa/nodo.cpp_exe &
+*
 
 
-
-sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install hostapd
-sudo apt-get install dnsmasq
+sudo apt-get update -y 
+sudo apt-get upgrade  --force-yes -y
+sudo apt-get install hostapd 
+sudo apt-get install dnsmasq 
 sudo systemctl stop hostapd
 sudo systemctl stop dnsmasq
 sudo nano /etc/dhcpcd.conf
     ##add at end:
-    interface wlan0
-    static ip_address=192.168.0.10/24
-    nohook wpa_supplicant
+interface wlan0
+static ip_address=192.168.0.10/24
+nohook wpa_supplicant
+    ##add at end:
 sudo service dhcpcd restart
 sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
 sudo nano /etc/dnsmasq.conf
-    interface=wlan0      # Use the require wireless interface - usually wlan0
-    dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h
+#
+interface=wlan0      # Use the require wireless interface - usually wlan0
+dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h
+#
 sudo systemctl reload dnsmasq
 sudo nano /etc/hostapd/hostapd.conf
-    interface=wlan0
-    driver=nl80211
-    ssid=lora
-    hw_mode=g
-    channel=7
-    wmm_enabled=0
-    macaddr_acl=0
-    auth_algs=1
-    ignore_broadcast_ssid=0
-    wpa=2
-    wpa_passphrase=lora
-    wpa_key_mgmt=WPA-PSK
-    wpa_pairwise=TKIP
-    rsn_pairwise=CCMP
+#
+interface=wlan0
+driver=nl80211
+ssid=lora
+hw_mode=g
+channel=7
+wmm_enabled=0
+macaddr_acl=0
+auth_algs=1
+ignore_broadcast_ssid=0
+wpa=2
+wpa_passphrase=lora
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
+#
 sudo nano /etc/default/hostapd
 DAEMON_CONF="/etc/hostapd/hostapd.conf"
 sudo systemctl unmask hostapd
@@ -96,7 +107,8 @@ sudo systemctl status hostapd
 sudo systemctl status dnsmasq
 sudo nano /etc/sysctl.conf
 ## find #net.ipv4.ip_forward=1
-    net.ipv4.ip_forward=1    
+net.ipv4.ip_forward=1  
+#  
 sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
 iptables-restore < /etc/iptables.ipv4.nat
@@ -105,6 +117,7 @@ sudo reboot
 
 
 # Buscar la trama que tenga GNRMC  => 16:25:24  $GNRMC,162524.00,A,0438.09185,N,07404.10138,W,0.043,,311019,,,A,V*0A
+                                                $GNGGA$0        ,A,         0,N,          0,W,    0,,      ,,,V,V*0A'
 #GNRMC => Todo va separado por "," (Comas)
 #  A (0.1)  => A o V nos indica el estado de nuestra conexion GPS si es activa (A) o sin senal (V).
 # 0.043  (0.2) =>  velocidad experimentada en nudos 

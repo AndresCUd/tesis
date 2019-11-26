@@ -19,7 +19,7 @@ content1 = fi.readline()
 if data > 30:
     line_prepender(nodo,data)
 else:
-    msg = nodo +",0,0,0,0,0,0,0_$ \n"
+    msg = nodo +",0,0,0,0,0,0,0_$"
     line_prepender(nodo,msg)
 fi.close()
 

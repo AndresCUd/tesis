@@ -40,22 +40,7 @@ def maestro(request):
     n.save()
     n =  nodos.objects.all()
     m = maestroES.objects.all()
-    return render(request, 'nodos/index.html',{"data":n,"maestro":m})
-
-
-def esclavo(request):
-    fil = os.path.join(path,"modo.txt")
-    f1 = open(fil,'w')
-    f1.write("0")
-    f1.close()
-    try:
-        n = maestroES.objects.get(index = 0)
-    except maestroES.DoesNotExist:
-        n = maestroES(index = 0,maestro = False)
-    n.save()
-    n =  nodos.objects.all()
-    m = maestroES.objects.all()
-    return render(request, 'nodos/index.html',{"data":n,"maestro":m})
+    return render(request, 'nodos/index.html',{"data":n,"data2":m})
 
 
 def actualizar(request):
