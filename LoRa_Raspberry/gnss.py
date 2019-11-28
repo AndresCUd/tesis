@@ -88,3 +88,18 @@ python  /home/pi/Desktop/LoRa/gnss.py 9 0 0 0 0 0 0 0
 
 #4.6349203333333335,-74.06839783333334
 #4.6356665  ,-74.0682755
+
+
+"""
+import datetime
+
+a = datetime.datetime.now()
+users  = db.collection(u'users').get().to_dict()
+for user in users:
+  userTime =datetime.datetime.timestamp(timestamp)
+  if userTime - a >= 36000 :
+     db.collection(u'users').document(user.id).delete()
+
+
+
+"""

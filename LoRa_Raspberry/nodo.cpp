@@ -24,7 +24,7 @@ char coma[] = " ";
 char mgsA[] = "a";
 char mgsB[] = "b";
 char aux[1];
-int numNodo = 3;
+int numNodo =1;
 // GNSS Comunicacion Serial
 char buff[255];
 char stringNodo[]  ="//home//pi//Desktop//data//nodo";
@@ -78,6 +78,7 @@ void esclavo(void){
       paqOrigin = (int)sx1272.packet_received.src;
       paqueteRecibido = paqueteRecibido + 1;
       e = 1;
+      int error = 0;
         while (e > 0){
         struct timeval start, stop;
         gettimeofday(&start, NULL);
@@ -93,7 +94,12 @@ void esclavo(void){
           gettimeofday(&stop, NULL);
           secs = (double)(stop.tv_usec - start.tv_usec) / 1000000 + (double)(stop.tv_sec - start.tv_sec);
           paqueteEnviado = paqueteEnviado + 1;
-          printf("Info regresada %s:\n", buff);}
+          printf("Info regresada %s:\n", buff);
+          }
+        if (error==2){
+          break;
+        }
+        error = error +1;
         }
     }
   }
@@ -104,7 +110,6 @@ void maestro(void){
   int k = sx1272._nodeAddress;
   for (int i = 1; i < 6; i++)  {
     if (i != k)    {
-      delay(10);
       printf("Pregunta al Nodo %d\n", i);
       e = sx1272.sendPacketTimeoutACK(i, mgsA);
       if (e == 0) {
@@ -200,13 +205,3 @@ int main(){
   return (0);
 }
 
-
-
-/*      if(mode1){
-        e = sx1272.sendPacketTimeoutACK(paqOrigin, buff);
-      }else{
-        e = sx1272.sendPacketTimeoutACK(paqOrigin, mgsB);
-        if (e == 0){
-          mode=true;
-        }
-      }*/

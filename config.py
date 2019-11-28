@@ -53,7 +53,7 @@ mv  nodo.cpp_exe   /home/pi/Desktop/LoRa/
 sudo nano /etc/rc.local
 # Add to end to the file
 # /home/pi/datos/LoRa_Django/nodos/views.py
-sudo python3  /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.164:8080 &
+sudo python3  /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.7:8080 &
 sudo /home/pi/Desktop/LoRa/nodo.cpp_exe &
 #
 # sudo  rm -r /home/pi/Desktop/LoRa/nodo.cpp_exe 

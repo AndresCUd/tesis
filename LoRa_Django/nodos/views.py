@@ -55,7 +55,11 @@ def actualizar(request):
         if "nodo" in str(file):
             file0 = os.path.join(path,file)
             data = open(file0, "r").readlines()
+            a = file.split(".")[0]
             lastData = data[0]
+            print(file)
+            if len(lastData) <5:
+                lastData =a[len(a)-1]+",0,0,0,0,0,0,0_,"
             data0 = lastData.split("_") 
             data = data0[0].split(",")
             if len(data0[1]) > 10:  
