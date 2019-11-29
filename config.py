@@ -24,14 +24,15 @@ alias python='python3'
 sudo apt-get install git
 ## Instaler ardupi
 git clone https://github.com/AndresCUd/tesis.git
-cd /home/pi/Desktop/
-mkdir data
-mkdir LoRa
+
+
+mkdir /home/pi/Desktop/LoRa
 cd  /home/pi/tesis/LoRa_Raspberry
 mv datos1.py /home/pi/Desktop/LoRa/
 mv gnss.py  /home/pi/Desktop/LoRa/
 mv saveData.py  /home/pi/Desktop/LoRa/
 mv modo.py  /home/pi/Desktop/LoRa/
+mkdir /home/pi/Desktop/data
 sudo python  //home//pi//Desktop//LoRa//datos1.py 1
 sudo python  //home//pi//Desktop//LoRa//datos1.py 2
 sudo python  //home//pi//Desktop//LoRa//datos1.py 3
@@ -53,7 +54,7 @@ mv  nodo.cpp_exe   /home/pi/Desktop/LoRa/
 sudo nano /etc/rc.local
 # Add to end to the file
 # /home/pi/datos/LoRa_Django/nodos/views.py
-sudo python3  /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.7:8080 &
+sudo python3  /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.227:8080 &
 sudo /home/pi/Desktop/LoRa/nodo.cpp_exe &
 #
 # sudo  rm -r /home/pi/Desktop/LoRa/nodo.cpp_exe 

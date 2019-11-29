@@ -42,7 +42,7 @@ def maestro(request):
     m = maestroES.objects.all()
     return render(request, 'nodos/index.html',{"data":n,"data2":m})
 
-
+#sudo reboot
 def actualizar(request):
     no =  nodos.objects.all()
     dirs = os.listdir( path )
@@ -57,7 +57,6 @@ def actualizar(request):
             data = open(file0, "r").readlines()
             a = file.split(".")[0]
             lastData = data[0]
-            print(file)
             if len(lastData) <5:
                 lastData =a[len(a)-1]+",0,0,0,0,0,0,0_,"
             data0 = lastData.split("_") 
@@ -66,10 +65,9 @@ def actualizar(request):
                 if "$GNGGA" in data0[1]:
                     msg = pynmea2.parse(data0[1].rstrip('\n'))
                 else:
-                    print("alskd")
                     msg = pynmea2.parse("$GNGGA"+data0[1].rstrip('\n'))
             else:
-                msg = pynmea2.parse("$GNGGA,0,0,N,0,W,0,0,0,0,M,0")
+                msg = pynmea2.parse("$GNGGA,190216.00,,,,,0,00,99.99,,,,,,*75")
             #9,1,2,3,4,5,6,0$GNGGA,185951.00,0438.09587,N,07404.10108,W,1,12,0.65,2601.3,M,4.7
             try:
                 n = nodos.objects.get(NumeroNodo = int(data[0])) 
