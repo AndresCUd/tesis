@@ -32,12 +32,19 @@ mv datos1.py /home/pi/Desktop/LoRa/
 mv gnss.py  /home/pi/Desktop/LoRa/
 mv saveData.py  /home/pi/Desktop/LoRa/
 mv modo.py  /home/pi/Desktop/LoRa/
+sudo rm -r /home/pi/Desktop/data/
 mkdir /home/pi/Desktop/data
 sudo python  //home//pi//Desktop//LoRa//datos1.py 1
 sudo python  //home//pi//Desktop//LoRa//datos1.py 2
 sudo python  //home//pi//Desktop//LoRa//datos1.py 3
 sudo python  //home//pi//Desktop//LoRa//datos1.py 4
 sudo python  //home//pi//Desktop//LoRa//datos1.py 5
+sudo ./cook.sh nodo.cpp
+sudo rm -r /home/pi/Desktop/LoRa/nodo.cpp_exe 
+mv  nodo.cpp_exe   /home/pi/Desktop/LoRa/
+sudo /home/pi/Desktop/LoRa/nodo.cpp_exe 
+
+
 nano  //home//pi//Desktop//LoRa//modo.txt
 0
 cd  /home/pi/tesis/LoRa_Django
@@ -54,10 +61,11 @@ mv  nodo.cpp_exe   /home/pi/Desktop/LoRa/
 sudo nano /etc/rc.local
 # Add to end to the file
 # /home/pi/datos/LoRa_Django/nodos/views.py
-sudo python3  /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.227:8080 &
+sudo nano /etc/rc.local
+sudo python3  /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.21:8080 &
 sudo /home/pi/Desktop/LoRa/nodo.cpp_exe &
 #
-# sudo  rm -r /home/pi/Desktop/LoRa/nodo.cpp_exe 
+#sudo  rm -r /home/pi/Desktop/LoRa/nodo.cpp_exe &
 #sudo /home/pi/cooking/examples/LoRa/nodo.cpp_exe &
 *
 
