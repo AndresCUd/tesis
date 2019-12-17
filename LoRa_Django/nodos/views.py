@@ -9,11 +9,12 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import nodos,maestroES
 import os, sys
 import json
+from django.core import serializers
 import pynmea2
+#path ="C:/Users/Alvaro/Desktop/tesis/datos/New folder (2)"
 path = "/home/pi/Desktop/data/"
 #path="C:/Users/Alvaro/Desktop/datos"
- 
-
+# 
 def download(request,filename):
     file = os.path.join(path,filename)
     response = HttpResponse(open(file).read())#content_type='application/force-download') 
@@ -40,11 +41,11 @@ def maestro(request):
     n.save()
     n =  nodos.objects.all()
     m = maestroES.objects.all()
-    return render(request, 'nodos/index.html',{"data":n,"data2":m})
+    data = serializers.serialize('json',nodos.objects.all(), fields=('NumeroNodo','latitud','longitud','estadoGnss'))
+    return render(request, 'nodos/index.html',{"data":n,"data2":m,"dataJ":data})
 
 #sudo reboot
 def actualizar(request):
-    no =  nodos.objects.all()
     dirs = os.listdir( path )
     try:
         m = maestroES.objects.get(index = 0)
@@ -109,7 +110,9 @@ def actualizar(request):
                         estadoGnss = True if int(msg.gps_qual) != 0 else False
                 )
                 n.save()
-    return  render(request, 'nodos/index.html',{"data":no})
+    no =  nodos.objects.all()
+    data = serializers.serialize('json',nodos.objects.all(), fields=('NumeroNodo','latitud','longitud','estadoGnss'))
+    return  render(request, 'nodos/index.html',{"data":no,"dataJ":data})
 
 def detallesNodo(request,filename):
     name = "nodo"+ filename + ".txt"
@@ -119,7 +122,8 @@ def detallesNodo(request,filename):
 def index(request):
     n =  nodos.objects.all()
     m = maestroES.objects.all()
-    return render(request, 'nodos/index.html',{"data":n,"maestro":m})
+    data = serializers.serialize('json',nodos.objects.all(), fields=('NumeroNodo','latitud','longitud','estadoGnss'))
+    return render(request, 'nodos/index.html',{"data":n,"maestro":m,"dataJ":data})
 
 #sudo python3 /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.111:8080
     

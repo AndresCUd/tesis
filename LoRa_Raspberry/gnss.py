@@ -37,7 +37,6 @@ try:
     while True:
         data = port.readline()
         if (data.startswith("$GNGGA")):
-            print(data)
             nmea = str(infoLora) +'_'+ str(data.rstrip('$\r\n')) +'_'
             msg = pynmea2.parse(data)
             if msg.gps_qual == 1:
