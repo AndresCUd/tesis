@@ -6,13 +6,13 @@ from django.contrib.auth import authenticate, login as dj_login
 from django.utils.encoding import  smart_str
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from .models import nodos,maestroES
+from nodos.models import nodos,maestroES
 import os, sys
 import json
 from django.core import serializers
 import pynmea2
-#path ="C:/Users/Alvaro/Desktop/tesis/datos/New folder (2)"
-path = "/home/pi/Desktop/data/"
+path ="C:/Users/Alvaro/Desktop/tesis/datos/New folder (2)"
+# "/home/pi/Desktop/data/"
 #path="C:/Users/Alvaro/Desktop/datos"
 # 
 def download(request,filename):
