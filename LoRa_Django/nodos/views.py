@@ -158,3 +158,7 @@ def NewUser(request):
         else:
             pass
     return render(request, 'inicio/register.html')
+
+msg = pynmea2.GGA('GP', 'GGA', ('215315.00', '0465.38408', 'N', '07409.33245', 'W', '1', '13', '0.64','2565.6', 'M', '4.6', 'M', '', '0000'))
+data = str(msg)
+dataf = pynmea2.parse(data)
