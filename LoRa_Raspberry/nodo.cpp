@@ -30,7 +30,6 @@ char buff[255];
 char stringNodo[]  ="//home//pi//Desktop//data//nodo";
 
 void setup(){
-  Serial.begin(9600);
   // Power ON the module
   e = sx1272.ON();
   printf("Setting power ON: state %d\n", e);

@@ -148,3 +148,8 @@ sudo reboot
 sudo rm -r /home/pi/tesis/
 sudo rm -r /home/pi/Desktop/data/
 sudo rm -r /home/pi/Desktop/LoRa/
+
+
+cd /home/pi/tesis
+unzip raspberrypi.zip && cd cooking/arduPi && chmod +x install_arduPi && ./install_arduPi && rm install_arduPi && cd ../..
+unzip -u arduPi-api_LoRa_v1_4.zip && cd cooking/examples/LoRa && chmod +x cook.sh && cd ../../..
