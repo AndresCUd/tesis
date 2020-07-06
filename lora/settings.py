@@ -88,12 +88,12 @@ DATABASES = {
 }
 '''
 import  dj_database_url
-from  decouple  import config  
+import  decouple 
 
 
 DATABASES = {
     'default':dj_database_url.config(
-        default =config('DATABASE_URL')
+        default = decouple.config('DATABASE_URL')
     )
 }
 
