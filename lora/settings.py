@@ -75,18 +75,7 @@ WSGI_APPLICATION = 'lora.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
-'''
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'mydatabase',
-        'USER': 'lora',
-        'PASSWORD': 'lora',
-        'HOST': '35.193.87.175',
-        'PORT': '5432',
-    }
-}
-'''
+
 import  dj_database_url
 from  decouple  import config  
 
