@@ -123,3 +123,5 @@ STATICFILES_DIRS = [
 STATIC_ROOT =os.path.join(BASE_DIR,"static")
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+#href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
