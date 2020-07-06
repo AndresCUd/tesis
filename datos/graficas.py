@@ -25,7 +25,6 @@ def graficaDatos(datos):
         PaquetesRecibidos=PaquetesRecibidos+1
     suma = sum(time) / len(time)
     a = abs(((PaquetesEnviados-PaquetesRecibidos)/PaquetesRecibidos)*100)
-
     return  suma ,a
 
 SF12_1_1 = graficaDatos(open(files[0],"r").readlines())
@@ -74,7 +73,7 @@ def grafPPerdids():
     
     
     label = [ERROR_12_1+ERROR_12_5]
-    r4 = ERROR_12_1+ERROR_12_5
+    #r4 = ERROR_12_1+ERROR_12_5
     # Text on the top of each barplot
     for i in range(len(R)):
         plt.text(x = R[i]-0.12 , y= label[0][i]+0.09, s = round(label[0][i],2), size = 12)
@@ -120,4 +119,5 @@ def grafBar():
 
 
 
-grafPPerdids()
+#grafPPerdids()
+print(SF12_1_1)

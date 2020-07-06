@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'q$d8#y5b$v%o%xhln$gn_77mk1ye7p!-#4_m*iz^e1zdnuew)0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -47,6 +47,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
 ROOT_URLCONF = 'lora.urls'
@@ -73,19 +75,29 @@ WSGI_APPLICATION = 'lora.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'mydatabase',
+        'USER': 'lora',
+        'PASSWORD': 'lora',
+        'HOST': '35.193.87.175',
+        'PORT': '5432',
     }
 }
+'''
+import  dj_database_url
+from  decouple  import config  
 
-MEDIA_ROOT =os.path.join(os.path.dirname(BASE_DIR),"media")
-STATIC_ROOT =os.path.join(os.path.dirname(BASE_DIR),"static")
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+DATABASES = {
+    'default':dj_database_url.config(
+        default =config('DATABASE_URL')
+    )
+}
+
+
 # Password validation
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
 
@@ -118,8 +130,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/dev/howto/static-files/
-
+MEDIA_ROOT =os.path.join(os.path.dirname(BASE_DIR),"media")
+STATICFILES_DIRS = {
+    os.path.join(BASE_DIR, 'static'),
+}
+STATIC_ROOT =os.path.join(BASE_DIR,"staticfiles")
 STATIC_URL = '/static/'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

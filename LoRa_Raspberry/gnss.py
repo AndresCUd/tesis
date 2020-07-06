@@ -143,7 +143,24 @@ $GNGGA,001927.00,0438.09547,N,07404.10247,W,1,08,1.62,2584.7,M,4.7,M,,*58
 
 
 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.3]{img/entornoGrafico/login.PNG}
+    \includegraphics[scale=0.3]{img/entornoGrafico/lista.PNG}
+    \caption[{Vistas Django (Inicio)} ]{ {Detalles de Nodo Django}\\ Fuente: Propia}
+    \label{fig:djangoLogin}
+\end{figure}
 
+
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.4]{img/entornoGrafico/detalles1.PNG}
+    \includegraphics[scale=0.4]{img/entornoGrafico/detalles2.PNG}
+    \caption[{Vistas Django (Detalles)} ]{ {Detalles de Nodo Django}\\ Fuente: Propia}
+    \label{fig:djangoDetails}
+\end{figure}
 
 
 

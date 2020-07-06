@@ -5,13 +5,13 @@ from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login as dj_login
 from django.utils.encoding import  smart_str
 from django.shortcuts import get_object_or_404
-from django.views.decorators.csrf import csrf_exempt
 from nodos.models import nodos,maestroES
 import os, sys
 import json
-from django.core import serializers
 import pynmea2
-path ="C:/Users/Alvaro/Desktop/tesis/datos/New folder (2)"
+from django.core import serializers
+
+path ="C:/Users/Alvaro/Desktop/tesis/datos/New folder"
 # "/home/pi/Desktop/data/"
 #path="C:/Users/Alvaro/Desktop/datos"
 # 
@@ -27,7 +27,6 @@ def ver(request,filename):
     # It's usually a good idea to set the 'Content-Length' header too. 
     # You can also set any other required headers: Cache-Control, etc. 
     return render(request, 'nodos/ver.html',{"data":file})
-
 
 def maestro(request):
     fil = os.path.join(path,"modo.txt")
@@ -125,8 +124,7 @@ def index(request):
     data = serializers.serialize('json',nodos.objects.all(), fields=('NumeroNodo','latitud','longitud','estadoGnss'))
     return render(request, 'nodos/index.html',{"data":n,"maestro":m,"dataJ":data})
 
-#sudo python3 /home/pi/tesis/LoRa_Django/manage.py runserver 192.168.137.111:8080
-    
+
 def loginUser(request):
     logout(request)
     if request.method == "POST":
@@ -159,6 +157,3 @@ def NewUser(request):
             pass
     return render(request, 'inicio/register.html')
 
-msg = pynmea2.GGA('GP', 'GGA', ('215315.00', '0465.38408', 'N', '07409.33245', 'W', '1', '13', '0.64','2565.6', 'M', '4.6', 'M', '', '0000'))
-data = str(msg)
-dataf = pynmea2.parse(data)
