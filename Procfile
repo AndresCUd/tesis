@@ -1,1 +1,1 @@
-web : guinicorn  lora.wsgi --log-file -
+web: guinicorn  lora.wsgi --log-file -
