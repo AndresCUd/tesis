@@ -45,3 +45,4 @@ wincertstore==0.2
 wrapt==1.11.2
 yapf==0.28.0
 zipp==2.0.1
+django-heroku==0.3.1
