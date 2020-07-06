@@ -77,18 +77,15 @@ WSGI_APPLICATION = 'lora.wsgi.application'
 
 
 import  dj_database_url
-from  decouple  import config  
+import  decouple 
 
 
 DATABASES = {
     'default':dj_database_url.config(
-        default =config('DATABASE_URL')
+        default = decouple.config('DATABASE_URL')
     )
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -120,9 +117,9 @@ USE_L10N = True
 USE_TZ = True
 
 MEDIA_ROOT =os.path.join(os.path.dirname(BASE_DIR),"media")
-STATICFILES_DIRS = {
+STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
-}
-STATIC_ROOT =os.path.join(BASE_DIR,"staticfiles")
+]
+STATIC_ROOT =os.path.join(BASE_DIR,"static")
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
