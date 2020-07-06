@@ -12,12 +12,10 @@ import pynmea2
 from django.core import serializers
 
 path ="C:/Users/Alvaro/Desktop/tesis/datos/New folder"
-# "/home/pi/Desktop/data/"
-#path="C:/Users/Alvaro/Desktop/datos"
-# 
+
 def download(request,filename):
     file = os.path.join(path,filename)
-    response = HttpResponse(open(file).read())#content_type='application/force-download') 
+    response = HttpResponse(open(file).read())
     response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(filename)
     return response 
 
