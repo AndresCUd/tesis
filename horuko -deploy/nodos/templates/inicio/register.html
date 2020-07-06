@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+{% load  static %}
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin - Login</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom fonts for this template-
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+-->
+    <!-- Custom styles for this template
+    <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
+-->
+-->
+</head>
+
+<body class="bg-dark">
+
+<div class="container">
+    <div class="card card-register mx-auto ">
+        <div class="card-header">Register an Account</div>
+        <div class="card-body">
+            <form method="post" id="userform"> {% csrf_token %}
+                <div class="form-group">
+                            <div class="col-md-auto">
+                            <div class="form-label-group">
+                                <input type="text" id="firstName" class="form-control" placeholder="First name"
+                                       required="required" autofocus="autofocus" name="username">
+                                <label for="firstName">First name</label>
+                            </div>
+
+                    </div>
+                       <div class="col-md-auto">
+                            <div class="form-label-group">
+                                <input type="password" id="inputPassword" class="form-control" placeholder="Password"
+                                       required="required" name="password">
+                                <label for="inputPassword">Password</label>
+                            </div>
+                        </div>
+                        <div class="col-md-auto">
+                            <div class="form-label-group">
+                                <input type="password" id="confirmPassword" class="form-control"
+                                       placeholder="Confirm password" required="required" name="password_conf">
+                                <label for="confirmPassword">Confirm Password</label>
+                            </div>
+                        </div>
+                        <label style="color:#FF0000;text-align: center"> {{ error }}</label>
+                    
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Register</button>
+            </form>
+            <div class="text-center">
+                <a class="d-block small" href="inicio*login.html">Login Page</a>
+                <a class="d-block small" href="forgot-password.html">Forgot Password?</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Bootstrap core JavaScript-->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+<script>
+    function run() {
+        var e = document.getElementById("tipos").
+        document.getElementById("Tipo").value = e.options[e.selectedIndex].value;
+    }
+</script>
+</body>
+
+</html>

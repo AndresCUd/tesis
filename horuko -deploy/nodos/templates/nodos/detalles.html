@@ -1,0 +1,150 @@
+{% extends 'nodos/base.html' %}
+{% load  static %}
+
+{% block menu %} {{ numero }}{% endblock %}
+{% block content %}
+    <style>
+body {
+  font-family: Verdana,sans-serif;
+  font-size: 1.5em;
+}
+
+div#header, div#footer {
+  padding: 10px;
+  color: white;
+  background-color: black;
+}
+
+div#content {
+  margin: 2px;
+  padding: 2px;
+  background-color: lightgrey;
+}
+
+div.article {
+  margin: 10px;
+  padding: 10px;
+  background-color: white;
+}
+
+div#menu ul {
+  padding: 0;
+}
+
+div#menu ul li {
+  display: inline;
+  margin: 5px;
+}
+
+h2{
+    text-align: center;
+}
+    </style>
+<div id="content">
+  <h2>Nodo {{ numero }}</h2>
+  <div class="article">
+    <h2>LoRa</h2>
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered table-striped">
+            <tr>
+                <th>Nombre </th>
+                <th>Estado </th>
+            </tr>
+            <tr>
+                <td>Estado</td>
+                {% if data.EstadoLora %}
+                <td><i class="fas fa-check"> </i></td>
+                {% else %}
+                <td><i class="fas fa-times"></i></td>
+                {% endif %}
+            </tr>
+
+            <tr>
+                <td>Numero de Nodo </td>
+                <td> {{ data.NumeroNodo }} </td>
+            </tr>
+            <tr>
+                <td>Ancho de Banda</td>
+                <td>{{ data.AnchoBanda }} (500 hz)</td>
+            </tr>
+            <tr>
+                <td>Correinte</td>
+                <td>{{ data.Corriente }} mA</td>
+            </tr>
+            <tr>
+                <td>Paquetes Enviados</td>
+                <td>{{ data.PaquetesEnviados}}</td>
+            </tr>
+            <tr>
+                <td>Paquetes Recibidos</td>
+                <td>{{ data.PaquetesRecibidos}}</td>
+            </tr>
+            <tr>
+                <td>Tiempo Envio</td>
+                <td>{{ data.TiempoEnvio }} Seg</td>
+            </tr>
+            <tr>
+                <td>RSSI(Potencia Señal)</td>
+                <td>{{ data.FuerzaSenal  }} dBm</td>
+            </tr>
+            <tr>
+                <td>Payload(Carga Util )</td>
+                <td>{{  data.CargaUtil }}</td>
+            </tr>
+
+        </table>
+    </div>
+
+  </div>
+
+  <div class="article">
+    <h2>GNSS</h2>
+      <div class="table-responsive">
+        <table class="table table-hover table-bordered table-striped">
+            <tr>
+                <th>Nombre </th>
+                <th>Estado </th>
+            </tr>
+            <tr>
+                <td>Estado</td>
+                {% if data.estadoGnss %}
+                <td><i class="fas fa-check"> </i></td>
+                {% else %}
+                <td><i class="fas fa-times"></i></td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td>Numero Satelites</td>
+                <td>{{ data.NumeroSatelites }}</td>
+            </tr>
+            <tr>
+                <td>Dilucion Horizontal  <br> de la Posicion</td>
+                <td>{{ data.dilucion }}</td>
+            </tr>
+            <tr>
+                <td>latitud</td>
+                <td>{{ data.latitud }}</td>
+            </tr>
+            <tr>
+                <td>Longitud</td>
+                <td>{{ data.longitud }}</td>
+            </tr>
+            <tr>
+                <td>Altitud</td>
+                <td>{{ data.altitud }} m</td>
+            </tr>
+            <tr>
+                <td>Fix Quality</td>
+                <td>{{ data.fixQuality }}</td>
+            </tr>
+        </table>
+    </div>
+  </div>
+
+</div>
+
+<a class="btn btn-primary btn-block" href="{% url 'nodos:download'  filename=file %}" >Descargar</a>
+<a class="btn btn-success btn-block" href="{% url 'nodos:ver'  filename=file %}">Ver Datos</a>
+<a class="btn btn-success btn-block" href="{% url 'nodos:index' %}">Regresar</a>
+
+{% endblock %}
