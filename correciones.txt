@@ -1,0 +1,20 @@
+Despues de Conclu:
+Colocar Productos Obtenidos
+ articulo con nombres y resista con fecha
+ Ponencias *2
+ Software =>
+ Hadware =>
+
+
+El tiempo promedio es proporcional al SF, manteniendo una condicion se separacion igual en ambos casos
+
+Subraller la de realacion porporcional en las conclusiones
+
+
+0. En sistema es adecuada para la georeferenciacion ? Respecto a la precision  de los GNSS
+1. Conclusiones por cada uno de los objetivos - LPWAN - GNSS - SBC
+2. Mediante la configuracion de latencia , perdidas paquetes y ToA
+3. Al tener una mayor SF aumenta el tiempo en el aire del mensaje lo que
+4. Hace mas vulnerable la red a interferencia generando un mayor perdida de paquetes
+
+Parte de proyecto de investigacion CIDC => "****"

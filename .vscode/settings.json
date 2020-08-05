@@ -1,3 +1,6 @@
 {
-    "python.linting.enabled": false
+    "python.formatting.provider": "yapf",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": false,
+    "python.pythonPath": "C:\\ProgramData\\Anaconda3\\python.exe"
 }
