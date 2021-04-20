@@ -28,7 +28,7 @@ packaging==20.1
 pipenv==2020.6.2
 pluggy==0.13.1
 psycopg2==2.8.5
-py==1.8.1
+py==1.10.0
 pycodestyle==2.6.0
 pydot==1.4.1
 pyflakes==2.2.0
