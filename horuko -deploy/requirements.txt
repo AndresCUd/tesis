@@ -25,7 +25,7 @@ lazy-object-proxy==1.4.2
 mccabe==0.6.1
 more-itertools==8.1.0
 packaging==20.1
-pipenv==2020.6.2
+pipenv==2022.1.8
 pluggy==0.13.1
 psycopg2==2.8.5
 py==1.8.1
